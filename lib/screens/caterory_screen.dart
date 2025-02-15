@@ -112,7 +112,7 @@ class _CategoryScreenState extends ConsumerState<CategoryScreen> {
                                       : Color(0xFFDB200C),
                                   filterKey: 'rodzajLokalu',
                                   lista: _rodzajLokalu,
-                                  text: 'Rodzaj lokalu',
+                                  text: 'Rodzaj',
                                   onSelect: (value) {
                                     setState(() {
                                       filter.rodzajLokalu = value;
@@ -166,7 +166,7 @@ class _CategoryScreenState extends ConsumerState<CategoryScreen> {
                                   isSwitched: filter.naRandke == null
                                       ? false
                                       : filter.naRandke!,
-                                  text: 'Na romantyczną randkę',
+                                  text: 'Na randkę',
                                   onSwitch: (value) {
                                     setState(() {
                                       filter.naRandke = value;
@@ -221,7 +221,7 @@ class _CategoryScreenState extends ConsumerState<CategoryScreen> {
                                   bgcolor2: filter.odleglosc == null
                                       ? kBgDarker
                                       : Color(0xFFDB200C),
-                                  text: 'Odległość',
+                                  text: 'Dystans',
                                   onSlide: (value) {
                                     setState(() {
                                       ref.read(filterProvider.notifier).update(
@@ -261,7 +261,7 @@ class _CategoryScreenState extends ConsumerState<CategoryScreen> {
                                   bgcolor2: filter.bezpieczenstwo == null
                                       ? kBgDarker
                                       : Color(0xFFDB200C),
-                                  text: 'Bezpieczny',
+                                  text: 'Safe',
                                   onSlide: (value) {
                                     setState(() {
                                       ref.read(filterProvider.notifier).update(

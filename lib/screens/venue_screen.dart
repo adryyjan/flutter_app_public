@@ -204,33 +204,33 @@ class _VenueScreenState extends ConsumerState<VenueScreen> {
                             text: 'OCENA W APCE',
                           ),
                           LocalProperyty(
-                            wartosc: wybranyLokal?.ocena.toStringAsFixed(2),
+                            wartosc: wybranyLokal.ocena.toStringAsFixed(1),
                             text: 'OCENA',
                           ),
                           LocalProperyty(
-                            wartosc: wybranyLokal?.czystosc.toStringAsFixed(2),
+                            wartosc: wybranyLokal.czystosc.toStringAsFixed(2),
                             text: 'CZYSTOŚĆ',
                           ),
                           LocalProperyty(
-                            wartosc: wybranyLokal?.atmosfera.toStringAsFixed(2),
+                            wartosc: wybranyLokal.atmosfera.toStringAsFixed(2),
                             text: 'ATMOFERA',
                           ),
                           LocalProperyty(
                             wartosc:
-                                wybranyLokal?.kameralnosc.toStringAsFixed(2),
+                                wybranyLokal.kameralnosc.toStringAsFixed(2),
                             text: 'KAMERALNOŚĆ',
                           ),
                           LocalProperyty(
-                            wartosc: wybranyLokal?.muzyka.toStringAsFixed(2),
+                            wartosc: wybranyLokal.muzyka.toStringAsFixed(2),
                             text: 'MUZYKA',
                           ),
                           LocalProperyty(
                             wartosc:
-                                wybranyLokal?.bezpieczenstwo.toStringAsFixed(2),
+                                wybranyLokal.bezpieczenstwo.toStringAsFixed(2),
                             text: 'BEZPIECZEŃSTWO',
                           ),
                           LocalProperyty(
-                            wartosc: wybranyLokal?.personel.toStringAsFixed(2),
+                            wartosc: wybranyLokal.personel.toStringAsFixed(2),
                             text: 'PERSONEL',
                           ),
                         ],
@@ -254,12 +254,11 @@ class _VenueScreenState extends ConsumerState<VenueScreen> {
                                       bgcolor1: Color(0xFFe8e8a5),
                                       bgcolor2: Color(0xFFe8e8a5),
                                       maxSlide: 10,
-                                      ocena: 5,
+                                      ocena: ocena == null ? 5.0 : ocena!,
                                       onSlide: (value) async {
                                         setState(() {
-                                          is_used = true;
-                                          ocena = value;
                                           print('ocena: ${ocena}');
+                                          ocena = value;
                                         });
                                       },
                                     ),

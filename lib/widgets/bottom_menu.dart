@@ -31,6 +31,9 @@ class BottomMenu extends StatelessWidget {
       ),
       child: Column(
         children: [
+          SizedBox(
+            height: 1,
+          ),
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

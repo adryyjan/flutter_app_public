@@ -31,7 +31,8 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
         return Lokal.fromMap(doc.data() as Map<String, dynamic>);
       }).toList();
 
-      print("Pobrano ${allVenues.length} lokali.");
+      allVenues.sort((a, b) => b.ocena.compareTo(a.ocena));
+
       return allVenues;
     } catch (e) {
       print("Błąd podczas pobierania wszystkich lokali: $e");
@@ -76,21 +77,22 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                   child: Text(''),
                 ),
                 TextButton(
-                    onPressed: () {
-                      Navigator.popAndPushNamed(context, LoginScreen.id);
-                    },
-                    child: const Text('Zaloguj się'))
+                  onPressed: () {
+                    Navigator.popAndPushNamed(context, LoginScreen.id);
+                  },
+                  child: Text('Zaloguj się', style: kDesctyprionTextStyleBlack),
+                )
               ],
             ),
             Expanded(
               flex: 2,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
-                    'Dołącz do nas!',
-                    style: kTitleTextStyleWhite,
+                    'DOŁĄCZ DO NAS!',
+                    style: kSmallerTitleTextStyleWhite,
                   ),
                   Text(
                     'Załóż konto i nie zastanawiaj się już nigdy gdzie spedzisz wieczór- my zrobimy to za Ciebie :0',
@@ -100,7 +102,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
               ),
             ),
             Expanded(
-                flex: 2,
+                flex: 3,
                 child: Container(
                   decoration: kZakladka,
                   child: Column(
@@ -206,9 +208,9 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                           ),
                         ),
                       ),
-                      SizedBox(
-                        height: 50,
-                      ),
+                      // SizedBox(
+                      //   height: 50,
+                      // ),
                       Text('Firebase- fb'),
                       Text('Firebase- gmail'),
                       Text('Firebase- telefon')

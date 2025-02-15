@@ -20,11 +20,10 @@ class _MegaPromocjeState extends ConsumerState<MegaPromocje> {
     return Container(
         decoration: BoxDecoration(
           boxShadow: [
-            // PRZENIOSŁEM BoxShadow DO ZEWNĘTRZNEGO CONTAINERA
             BoxShadow(
-              color: Color(0xFFDB200C).withValues(), // Czerwony blask
-              blurRadius: 5, // Większe rozmycie dla lepszego efektu
-              spreadRadius: 5, // Większa widoczność
+              color: Color(0xFFDB200C).withValues(),
+              blurRadius: 5,
+              spreadRadius: 5,
             ),
           ],
           borderRadius: BorderRadius.circular(35),
@@ -41,80 +40,44 @@ class _MegaPromocjeState extends ConsumerState<MegaPromocje> {
                 ref.read(selectedOfertaProvider.notifier).state = widget.oferta;
                 Navigator.pushNamed(context, OffertScreen.id);
               },
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Stack(
-                    children: [
-                      Text(
-                        widget.oferta.oferta,
-                        style: TextStyle(
-                          fontSize: 40,
-                          foreground: Paint()
-                            ..style = PaintingStyle.stroke
-                            ..strokeWidth = 8
-                            ..color = Colors.black,
-                          fontWeight: FontWeight.w900,
+              child: Padding(
+                padding: const EdgeInsets.only(right: 30.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Stack(
+                      children: [
+                        Text(
+                          widget.oferta.oferta,
+                          style: kOffertHeadBg,
                         ),
-                      ),
-                      Text(
-                        widget.oferta.oferta,
-                        style: TextStyle(
-                          fontSize: 40,
-                          color: Colors.white,
-                          fontWeight: FontWeight.w900,
+                        Text(
+                          widget.oferta.oferta,
+                          style: kOffertHead,
                         ),
-                      ),
-                    ],
-                  ),
-                  Stack(
-                    children: [
-                      Text(
-                        widget.oferta.opisOferta,
-                        style: TextStyle(
-                          fontSize: 40,
-                          foreground: Paint()
-                            ..style = PaintingStyle.stroke
-                            ..strokeWidth = 8
-                            ..color = Colors.black,
-                          fontWeight: FontWeight.w900,
+                      ],
+                    ),
+                    Stack(
+                      children: [
+                        Text(
+                          widget.oferta.opisOferta,
+                          style: kOffertDiscountBg,
                         ),
-                      ),
-                      Text(
-                        widget.oferta.opisOferta,
-                        style: TextStyle(
-                          fontSize: 40,
-                          color: Colors.white,
-                          fontWeight: FontWeight.w900,
+                        Text(
+                          widget.oferta.opisOferta,
+                          style: kOffertDiscount,
                         ),
-                      ),
-                    ],
-                  ),
-                  Stack(
-                    children: [
-                      Text(
-                        widget.oferta.cena,
-                        style: TextStyle(
-                          fontSize: 30,
-                          foreground: Paint()
-                            ..style = PaintingStyle.stroke
-                            ..strokeWidth = 8
-                            ..color = Colors.black,
-                          fontWeight: FontWeight.w900,
-                        ),
-                      ),
-                      Text(
-                        widget.oferta.cena,
-                        style: TextStyle(
-                          fontSize: 30,
-                          color: Colors.white,
-                          fontWeight: FontWeight.w900,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
+                      ],
+                    ),
+                    Stack(
+                      children: [
+                        Text(widget.oferta.cena, style: kOffertHeadBg),
+                        Text(widget.oferta.cena, style: kOffertHead),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

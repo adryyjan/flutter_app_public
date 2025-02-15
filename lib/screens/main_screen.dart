@@ -83,6 +83,9 @@ class _MainScreenState extends ConsumerState<MainScreen> {
     var favFb = ref.watch(ulubioneProvider);
     final filter = ref.watch(filterProvider);
 
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+
     return Scaffold(
       body: Container(
         color: kTlo,
@@ -93,7 +96,7 @@ class _MainScreenState extends ConsumerState<MainScreen> {
             ),
             Text('FUNAVI', style: kTitleTextStyleBlack),
             Container(
-              height: 200,
+              height: 180,
               child: GridView.builder(
                 padding: EdgeInsets.all(8.0),
                 scrollDirection: Axis.horizontal,
@@ -154,7 +157,7 @@ class _MainScreenState extends ConsumerState<MainScreen> {
                             : Colors.transparent,
                       ),
                       child: Icon(
-                        Icons.search,
+                        Icons.manage_search_outlined,
                         size: 40,
                         color: selected_choice == wybor.filtrowane
                             ? Colors.red
@@ -165,7 +168,6 @@ class _MainScreenState extends ConsumerState<MainScreen> {
                   Expanded(
                     child: TextButton(
                       onPressed: () async {
-                        favFb = await pobierzUlubione();
                         ref.read(ulubioneProvider.notifier).addLokale(favFb);
 
                         setState(() {
@@ -209,7 +211,7 @@ class _MainScreenState extends ConsumerState<MainScreen> {
                           : Center(
                               child: Text(
                                 'Niestety, za dużo chcesz od życia :?',
-                                style: kTitleTextStyleBlack,
+                                style: kSmallerTitleTextStyleBlack,
                                 textAlign: TextAlign.center,
                               ),
                             )

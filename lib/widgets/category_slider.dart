@@ -58,7 +58,7 @@ class _CategorySliderState extends State<CategorySlider> {
               ),
               Expanded(
                 child: Text(
-                  widget.ocena.toStringAsFixed(2),
+                  widget.ocena.toStringAsFixed(1),
                   style: kDesctyprionTextStyleBlack,
                 ),
               ),

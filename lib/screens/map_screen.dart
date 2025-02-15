@@ -389,7 +389,7 @@ class _MapScreenState extends ConsumerState<MapScreen> {
                     )
                   : Text(
                       textAlign: TextAlign.center,
-                      'Droga do lokalu:   ${odleglosc} km',
+                      'Trasa:   ${odleglosc} km',
                       style: kSmallerTitleTextStyleBlack,
                     ),
             ),

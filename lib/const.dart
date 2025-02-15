@@ -19,6 +19,30 @@ var kDesctyprionTextStyleWhite = GoogleFonts.montserrat(
 var kDesctyprionTextStyleBlack = GoogleFonts.montserrat(
     fontSize: 20, fontWeight: FontWeight.w900, color: Colors.black);
 
+var kOffertHead = GoogleFonts.montserrat(
+    fontSize: 30, fontWeight: FontWeight.w900, color: Colors.white);
+
+var kOffertHeadBg = GoogleFonts.montserrat(
+  fontSize: 31,
+  foreground: Paint()
+    ..style = PaintingStyle.stroke
+    ..strokeWidth = 8
+    ..color = Colors.black,
+  fontWeight: FontWeight.w900,
+);
+
+var kOffertDiscount = GoogleFonts.montserrat(
+    fontSize: 35, fontWeight: FontWeight.w900, color: Colors.white);
+
+var kOffertDiscountBg = GoogleFonts.montserrat(
+  fontSize: 36,
+  foreground: Paint()
+    ..style = PaintingStyle.stroke
+    ..strokeWidth = 8
+    ..color = Colors.black,
+  fontWeight: FontWeight.w900,
+);
+
 var kGradientYO = BoxDecoration(
   gradient: const LinearGradient(
     colors: [Color(0xFFffb114), Color(0xFFFFD700)],

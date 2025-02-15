@@ -35,7 +35,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
         return Lokal.fromMap(doc.data() as Map<String, dynamic>);
       }).toList();
 
-      print("Pobrano ${allVenues.length} lokali.");
+      allVenues.sort((a, b) => b.ocena.compareTo(a.ocena));
+
       return allVenues;
     } catch (e) {
       print("Błąd podczas pobierania wszystkich lokali: $e");
@@ -103,8 +104,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   }
 
   Widget build(BuildContext context) {
-    final listaLokali = ref.watch(lokalProvider);
-
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
@@ -122,21 +121,25 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   child: Text(''),
                 ),
                 TextButton(
-                    onPressed: () {
-                      Navigator.popAndPushNamed(context, RegisterScreen.id);
-                    },
-                    child: const Text('Zarejestruj się'))
+                  onPressed: () {
+                    Navigator.popAndPushNamed(context, RegisterScreen.id);
+                  },
+                  child: Text(
+                    'Zarejestruj się',
+                    style: kDesctyprionTextStyleBlack,
+                  ),
+                )
               ],
             ),
             Expanded(
               flex: 2,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
-                    'Czas na relax!',
-                    style: kTitleTextStyleWhite,
+                    'CZAS NA RELAX!',
+                    style: kSmallerTitleTextStyleWhite,
                   ),
                   Text(
                     'Powiedz czego oczekujesz od dzisiejszego wyjscia a My powiemy ci gdzie tego szukać :)',
@@ -146,7 +149,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
               ),
             ),
             Expanded(
-                flex: 2,
+                flex: 3,
                 child: Container(
                   decoration: kZakladka,
                   child: Column(
