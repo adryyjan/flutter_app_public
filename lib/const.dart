@@ -1,17 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-var kTitleTextStyle =
-    GoogleFonts.poppins(fontSize: 70, fontWeight: FontWeight.w900);
+var kTitleTextStyleBlack = GoogleFonts.poppins(
+    fontSize: 70, fontWeight: FontWeight.w900, color: Colors.black);
+
+var kTitleTextStyleWhite = GoogleFonts.poppins(
+    fontSize: 70, fontWeight: FontWeight.w900, color: Colors.white);
+
+var kSmallerTitleTextStyleBlack = GoogleFonts.poppins(
+    fontSize: 40, fontWeight: FontWeight.w900, color: Colors.black);
+
+var kSmallerTitleTextStyleWhite = GoogleFonts.poppins(
+    fontSize: 40, fontWeight: FontWeight.w900, color: Colors.white);
 
 var kDesctyprionTextStyleWhite = GoogleFonts.montserrat(
     fontSize: 20, fontWeight: FontWeight.w900, color: Colors.white);
 
 var kDesctyprionTextStyleBlack = GoogleFonts.montserrat(
     fontSize: 20, fontWeight: FontWeight.w900, color: Colors.black);
-
-var kBiggerTitleTextStyle = GoogleFonts.poppins(
-    fontSize: 70, fontWeight: FontWeight.w900, color: Colors.white);
 
 var kGradientYO = BoxDecoration(
   gradient: const LinearGradient(
@@ -31,6 +37,7 @@ var kGradientBR = LinearGradient(
 );
 
 const kTlo = Color(0xFFE0E0E0);
+const kBgDarker = Color(0xFFCCCCCC);
 
 const kZakladka = BoxDecoration(
   color: kTlo,

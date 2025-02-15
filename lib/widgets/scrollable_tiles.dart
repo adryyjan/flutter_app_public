@@ -4,7 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../API_PRIVATE.dart';
 import '../class/Location.dart';
 import '../class/local_data.dart';
-import '../class/riverpod.dart';
+import '../providers/currSelectedProvider.dart';
+import '../providers/ulunioneProvider.dart';
 import '../screens/venue_screen.dart';
 
 class ScrollableTiles extends ConsumerWidget {
@@ -30,7 +31,7 @@ class ScrollableTiles extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final userLocation = ref.watch(userLocationProvider);
+    // final userLocation = ref.watch(userLocationProvider);
     final ulubioneLokale = ref.watch(ulubioneProvider);
     return Container(
       margin: EdgeInsets.only(right: 10, left: 10),

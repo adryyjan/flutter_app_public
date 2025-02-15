@@ -7,8 +7,11 @@ import 'package:funnavi/screens/register_screen.dart';
 
 import '../class/local_data.dart';
 import '../class/ofert_data.dart';
-import '../class/riverpod.dart';
 import '../const.dart';
+import '../providers/authProvider.dart';
+import '../providers/lokalsProvider.dart';
+import '../providers/offertsProvider.dart';
+import '../providers/ulunioneProvider.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   static const id = 'login';
@@ -133,7 +136,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 children: [
                   Text(
                     'Czas na relax!',
-                    style: kBiggerTitleTextStyle,
+                    style: kTitleTextStyleWhite,
                   ),
                   Text(
                     'Powiedz czego oczekujesz od dzisiejszego wyjscia a My powiemy ci gdzie tego szukać :)',

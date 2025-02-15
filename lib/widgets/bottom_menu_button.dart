@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../class/riverpod.dart';
+import '../providers/currSelectedProvider.dart';
 
 class BottomMenuButton extends ConsumerStatefulWidget {
   final String ekran;

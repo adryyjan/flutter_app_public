@@ -5,8 +5,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:funnavi/widgets/Mega_promocje.dart';
 
 import '../class/local_data.dart';
-import '../class/riverpod.dart';
 import '../const.dart';
+import '../providers/authProvider.dart';
+import '../providers/filterProvider.dart';
+import '../providers/filteredLocalsProvider.dart';
+import '../providers/lokalsProvider.dart';
+import '../providers/offertsProvider.dart';
+import '../providers/ulunioneProvider.dart';
 import '../widgets/bottom_menu.dart';
 import '../widgets/scrollable_tile_final_normal.dart';
 import '../widgets/sscrollable_tile_final_swipable.dart';
@@ -86,7 +91,7 @@ class _MainScreenState extends ConsumerState<MainScreen> {
             SizedBox(
               height: 30,
             ),
-            Text('FUNAVI', style: kTitleTextStyle),
+            Text('FUNAVI', style: kTitleTextStyleBlack),
             Container(
               height: 200,
               child: GridView.builder(
@@ -127,16 +132,12 @@ class _MainScreenState extends ConsumerState<MainScreen> {
                             ? Colors.white
                             : Colors.transparent,
                       ),
-                      child: Text(
-                        'Popularne',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize:
-                              selected_choice == wybor.popularne ? 18 : 14,
-                          fontWeight: selected_choice == wybor.popularne
-                              ? FontWeight.w900
-                              : FontWeight.normal,
-                        ),
+                      child: Icon(
+                        Icons.local_fire_department,
+                        size: 40,
+                        color: selected_choice == wybor.popularne
+                            ? Colors.red
+                            : Color(0xFF1E3A8A),
                       ),
                     ),
                   ),
@@ -152,16 +153,12 @@ class _MainScreenState extends ConsumerState<MainScreen> {
                             ? Colors.white
                             : Colors.transparent,
                       ),
-                      child: Text(
-                        'Twoje lokale',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize:
-                              selected_choice == wybor.filtrowane ? 19 : 14,
-                          fontWeight: selected_choice == wybor.filtrowane
-                              ? FontWeight.w900
-                              : FontWeight.normal,
-                        ),
+                      child: Icon(
+                        Icons.search,
+                        size: 40,
+                        color: selected_choice == wybor.filtrowane
+                            ? Colors.red
+                            : Color(0xFF1E3A8A),
                       ),
                     ),
                   ),
@@ -180,15 +177,12 @@ class _MainScreenState extends ConsumerState<MainScreen> {
                             ? Colors.white
                             : Colors.transparent,
                       ),
-                      child: Text(
-                        'Ulubione',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: selected_choice == wybor.ulubione ? 19 : 14,
-                          fontWeight: selected_choice == wybor.ulubione
-                              ? FontWeight.w900
-                              : FontWeight.normal,
-                        ),
+                      child: Icon(
+                        Icons.favorite_rounded,
+                        size: 40,
+                        color: selected_choice == wybor.ulubione
+                            ? Colors.red
+                            : Color(0xFF1E3A8A),
                       ),
                     ),
                   ),
@@ -215,7 +209,7 @@ class _MainScreenState extends ConsumerState<MainScreen> {
                           : Center(
                               child: Text(
                                 'Niestety, za dużo chcesz od życia :?',
-                                style: kTitleTextStyle,
+                                style: kTitleTextStyleBlack,
                                 textAlign: TextAlign.center,
                               ),
                             )
@@ -224,7 +218,7 @@ class _MainScreenState extends ConsumerState<MainScreen> {
                           : Center(
                               child: Text(
                                 'Wariacie dodaj cos do ulubionych',
-                                style: kTitleTextStyle,
+                                style: kTitleTextStyleBlack,
                               ),
                             ),
             ),

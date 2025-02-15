@@ -8,8 +8,11 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
 
 import '../API_PRIVATE.dart';
-import '../class/riverpod.dart';
 import '../const.dart';
+import '../providers/currSelectedProvider.dart';
+import '../providers/filteredLocalsProvider.dart';
+import '../providers/ulunioneProvider.dart';
+import '../providers/userLocationProvider.dart';
 import '../widgets/bottom_menu.dart';
 
 enum MarkerColor { zielony, ciemnoZielony, ulubiony, rozowy, czerwony }
@@ -382,12 +385,12 @@ class _MapScreenState extends ConsumerState<MapScreen> {
                   ? Text(
                       textAlign: TextAlign.center,
                       'Wybierz lokal',
-                      style: kTitleTextStyle,
+                      style: kSmallerTitleTextStyleBlack,
                     )
                   : Text(
                       textAlign: TextAlign.center,
                       'Droga do lokalu:   ${odleglosc} km',
-                      style: kTitleTextStyle,
+                      style: kSmallerTitleTextStyleBlack,
                     ),
             ),
           ),

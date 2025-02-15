@@ -60,7 +60,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                 ),
                 Text(
                   'FUNNAVI',
-                  style: kTitleTextStyle,
+                  style: kTitleTextStyleBlack,
                 ),
                 const SizedBox(
                   height: 20,
@@ -90,7 +90,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     ),
                     Text(
                       'Witaj !',
-                      style: kBiggerTitleTextStyle,
+                      style: kTitleTextStyleWhite,
                     ),
                     const SizedBox(
                       height: 45,

@@ -8,8 +8,11 @@ import '../API_PRIVATE.dart';
 import '../class/Location.dart';
 import '../class/LokalFilter.dart';
 import '../class/local_data.dart';
-import '../class/riverpod.dart';
 import '../const.dart';
+import '../providers/filterProvider.dart';
+import '../providers/filteredLocalsProvider.dart';
+import '../providers/lokalsProvider.dart';
+import '../providers/userLocationProvider.dart';
 import '../widgets/category_switch.dart';
 import 'main_screen.dart';
 
@@ -90,7 +93,7 @@ class _CategoryScreenState extends ConsumerState<CategoryScreen> {
                   child: Column(
                     children: [
                       const SizedBox(height: 30),
-                      Text('FILTRY', style: kTitleTextStyle),
+                      Text('FILTRY', style: kTitleTextStyleBlack),
                       const SizedBox(height: 30),
                       Expanded(
                         child: Container(
@@ -102,10 +105,10 @@ class _CategoryScreenState extends ConsumerState<CategoryScreen> {
                               children: [
                                 CategoryRodzajList(
                                   bgcolor1: filter.rodzajLokalu == null
-                                      ? Color(0xFFe8e8a5)
+                                      ? kBgDarker
                                       : Color(0xFFffb114),
                                   bgcolor2: filter.rodzajLokalu == null
-                                      ? Color(0xFFe8e8a5)
+                                      ? kBgDarker
                                       : Color(0xFFDB200C),
                                   filterKey: 'rodzajLokalu',
                                   lista: _rodzajLokalu,
@@ -118,10 +121,10 @@ class _CategoryScreenState extends ConsumerState<CategoryScreen> {
                                 ),
                                 CategoryRodzajList(
                                   bgcolor1: filter.glownaSpecjalnosc == null
-                                      ? Color(0xFFe8e8a5)
+                                      ? kBgDarker
                                       : Color(0xFFffb114),
                                   bgcolor2: filter.glownaSpecjalnosc == null
-                                      ? Color(0xFFe8e8a5)
+                                      ? kBgDarker
                                       : Color(0xFFDB200C),
                                   filterKey: 'glownaSpecjalnosc',
                                   lista: _glownaSpecka,
@@ -135,13 +138,15 @@ class _CategoryScreenState extends ConsumerState<CategoryScreen> {
                                 CategorySwitch(
                                   bgcolor1: filter.strefaPalenia == null ||
                                           filter.strefaPalenia == false
-                                      ? Color(0xFFe8e8a5)
+                                      ? kBgDarker
                                       : Color(0xFFffb114),
                                   bgcolor2: filter.strefaPalenia == null ||
                                           filter.strefaPalenia == false
-                                      ? Color(0xFFe8e8a5)
+                                      ? kBgDarker
                                       : Color(0xFFDB200C),
-                                  isSwitched: filter.strefaPalenia ?? false,
+                                  isSwitched: filter.strefaPalenia == null
+                                      ? false
+                                      : filter.strefaPalenia!,
                                   text: 'Strefa palenia',
                                   onSwitch: (value) {
                                     setState(() {
@@ -152,11 +157,11 @@ class _CategoryScreenState extends ConsumerState<CategoryScreen> {
                                 CategorySwitch(
                                   bgcolor1: filter.naRandke == null ||
                                           filter.naRandke == false
-                                      ? Color(0xFFe8e8a5)
+                                      ? kBgDarker
                                       : Color(0xFFffb114),
                                   bgcolor2: filter.naRandke == null ||
                                           filter.naRandke == false
-                                      ? Color(0xFFe8e8a5)
+                                      ? kBgDarker
                                       : Color(0xFFDB200C),
                                   isSwitched: filter.naRandke == null
                                       ? false
@@ -171,11 +176,11 @@ class _CategoryScreenState extends ConsumerState<CategoryScreen> {
                                 CategorySwitch(
                                   bgcolor1: filter.przystosowany == null ||
                                           filter.przystosowany == false
-                                      ? Color(0xFFe8e8a5)
+                                      ? kBgDarker
                                       : Color(0xFFffb114),
                                   bgcolor2: filter.przystosowany == null ||
                                           filter.przystosowany == false
-                                      ? Color(0xFFe8e8a5)
+                                      ? kBgDarker
                                       : Color(0xFFDB200C),
                                   isSwitched: filter.przystosowany == null
                                       ? false
@@ -190,10 +195,10 @@ class _CategoryScreenState extends ConsumerState<CategoryScreen> {
                                 CategorySlider(
                                   precyzja: 25,
                                   bgcolor1: filter.ocena == null
-                                      ? Color(0xFFe8e8a5)
+                                      ? kBgDarker
                                       : Color(0xFFffb114),
                                   bgcolor2: filter.ocena == null
-                                      ? Color(0xFFe8e8a5)
+                                      ? kBgDarker
                                       : Color(0xFFDB200C),
                                   text: 'Ocena',
                                   onSlide: (value) {
@@ -211,10 +216,10 @@ class _CategoryScreenState extends ConsumerState<CategoryScreen> {
                                 CategorySlider(
                                   precyzja: 25,
                                   bgcolor1: filter.odleglosc == null
-                                      ? Color(0xFFe8e8a5)
+                                      ? kBgDarker
                                       : Color(0xFFffb114),
                                   bgcolor2: filter.odleglosc == null
-                                      ? Color(0xFFe8e8a5)
+                                      ? kBgDarker
                                       : Color(0xFFDB200C),
                                   text: 'Odległość',
                                   onSlide: (value) {
@@ -232,10 +237,10 @@ class _CategoryScreenState extends ConsumerState<CategoryScreen> {
                                 CategorySlider(
                                   precyzja: 25,
                                   bgcolor1: filter.halas == null
-                                      ? Color(0xFFe8e8a5)
+                                      ? kBgDarker
                                       : Color(0xFFffb114),
                                   bgcolor2: filter.halas == null
-                                      ? Color(0xFFe8e8a5)
+                                      ? kBgDarker
                                       : Color(0xFFDB200C),
                                   text: 'Hałas',
                                   onSlide: (value) {
@@ -251,10 +256,10 @@ class _CategoryScreenState extends ConsumerState<CategoryScreen> {
                                 CategorySlider(
                                   precyzja: 25,
                                   bgcolor1: filter.bezpieczenstwo == null
-                                      ? Color(0xFFe8e8a5)
+                                      ? kBgDarker
                                       : Color(0xFFffb114),
                                   bgcolor2: filter.bezpieczenstwo == null
-                                      ? Color(0xFFe8e8a5)
+                                      ? kBgDarker
                                       : Color(0xFFDB200C),
                                   text: 'Bezpieczny',
                                   onSlide: (value) {
@@ -283,30 +288,10 @@ class _CategoryScreenState extends ConsumerState<CategoryScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     Container(
-                      decoration: kGradientYO,
-                      child: TextButton(
-                        onPressed: () {
-                          print(filter.odleglosc);
-                          List<Lokal>? lokaleFilter =
-                              lokalFilterService.filtrujLokale(
-                                  lokale_temp!,
-                                  filter,
-                                  userLocation.latitude,
-                                  userLocation.longitude);
-                          ref
-                              .read(filteredLocalsProvider.notifier)
-                              .updateFilteredLocals(lokaleFilter);
-
-                          Navigator.popAndPushNamed(context, MainScreen.id);
-                        },
-                        child: Text(
-                          'OK',
-                          style: kDesctyprionTextStyleWhite,
-                        ),
+                      decoration: BoxDecoration(
+                        gradient: kGradientBR,
+                        borderRadius: BorderRadius.circular(15),
                       ),
-                    ),
-                    Container(
-                      decoration: kGradientYO,
                       child: TextButton(
                         onPressed: () {
                           setState(() {
@@ -334,6 +319,32 @@ class _CategoryScreenState extends ConsumerState<CategoryScreen> {
                         },
                         child: Text(
                           'Resetuj filtry',
+                          style: kDesctyprionTextStyleWhite,
+                        ),
+                      ),
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                        gradient: kGradientBR,
+                        borderRadius: BorderRadius.circular(15),
+                      ),
+                      child: TextButton(
+                        onPressed: () {
+                          print(filter.odleglosc);
+                          List<Lokal>? lokaleFilter =
+                              lokalFilterService.filtrujLokale(
+                                  lokale_temp!,
+                                  filter,
+                                  userLocation.latitude,
+                                  userLocation.longitude);
+                          ref
+                              .read(filteredLocalsProvider.notifier)
+                              .updateFilteredLocals(lokaleFilter);
+
+                          Navigator.popAndPushNamed(context, MainScreen.id);
+                        },
+                        child: Text(
+                          'OK',
                           style: kDesctyprionTextStyleWhite,
                         ),
                       ),

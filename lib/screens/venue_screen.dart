@@ -5,8 +5,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:funnavi/screens/map_screen.dart';
 import 'package:funnavi/widgets/locat_properyty.dart';
 
-import '../class/riverpod.dart';
 import '../const.dart';
+import '../providers/currSelectedProvider.dart';
+import '../providers/ulunioneProvider.dart';
 import '../widgets/bottom_menu.dart';
 import '../widgets/category_slider.dart';
 

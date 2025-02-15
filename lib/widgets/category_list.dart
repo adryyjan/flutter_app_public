@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../class/filter.dart';
-import '../class/riverpod.dart';
 import '../const.dart';
+import '../providers/filterProvider.dart';
 
 class CategoryRodzajList extends ConsumerStatefulWidget {
   String text;

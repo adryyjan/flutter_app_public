@@ -4,8 +4,9 @@ import 'package:funnavi/screens/venue_screen.dart';
 import 'package:funnavi/widgets/bottom_menu.dart';
 
 import '../class/local_data.dart';
-import '../class/riverpod.dart';
 import '../const.dart';
+import '../providers/currSelectedProvider.dart';
+import '../providers/lokalsProvider.dart';
 import '../widgets/locat_properyty.dart';
 import 'map_screen.dart';
 

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../class/ofert_data.dart';
-import '../class/riverpod.dart';
 import '../const.dart';
+import '../providers/currSelectedProvider.dart';
 import '../screens/offert_screen.dart';
 
 class MegaPromocje extends ConsumerStatefulWidget {

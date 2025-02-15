@@ -6,7 +6,7 @@ import 'package:funnavi/const.dart';
 import 'package:funnavi/widgets/scrollable_tiles.dart';
 
 import '../class/local_data.dart';
-import '../class/riverpod.dart';
+import '../providers/ulunioneProvider.dart';
 
 class ScrollableTileFinalNormal extends ConsumerStatefulWidget {
   List<Lokal>? lista;

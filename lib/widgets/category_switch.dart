@@ -23,8 +23,6 @@ class CategorySwitch extends StatefulWidget {
 }
 
 class _CategoryRodzajState extends State<CategorySwitch> {
-  bool isfirts = true;
-  late bool switcher;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -53,11 +51,11 @@ class _CategoryRodzajState extends State<CategorySwitch> {
                 style: kDesctyprionTextStyleBlack,
               ),
               Switch(
-                value: isfirts ? widget.isSwitched : switcher,
+                activeColor: Colors.white,
+                activeTrackColor: Color(0xFF1E3A8A),
+                value: widget.isSwitched,
                 onChanged: (value) {
                   setState(() {
-                    isfirts = false;
-                    switcher = value;
                     widget.isSwitched = value;
                   });
                   widget.onSwitch(value);

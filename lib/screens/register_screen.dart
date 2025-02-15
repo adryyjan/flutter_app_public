@@ -6,8 +6,10 @@ import 'package:funnavi/screens/login_screen.dart';
 
 import '../class/local_data.dart';
 import '../class/ofert_data.dart';
-import '../class/riverpod.dart';
 import '../const.dart';
+import '../providers/authProvider.dart';
+import '../providers/lokalsProvider.dart';
+import '../providers/offertsProvider.dart';
 import 'main_screen.dart';
 
 class RegisterScreen extends ConsumerStatefulWidget {
@@ -88,7 +90,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                 children: [
                   Text(
                     'Dołącz do nas!',
-                    style: kBiggerTitleTextStyle,
+                    style: kTitleTextStyleWhite,
                   ),
                   Text(
                     'Załóż konto i nie zastanawiaj się już nigdy gdzie spedzisz wieczór- my zrobimy to za Ciebie :0',
