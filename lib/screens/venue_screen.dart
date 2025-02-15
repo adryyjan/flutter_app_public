@@ -97,14 +97,14 @@ class _VenueScreenState extends ConsumerState<VenueScreen> {
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
-          color: Color.fromRGBO(254, 255, 218, 1),
+          color: kTlo,
         ),
         child: Column(
           children: [
             const SizedBox(height: 70),
 
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
                 Text(
                   '${wybranyLokal?.nazwaLokalu}',
@@ -132,11 +132,11 @@ class _VenueScreenState extends ConsumerState<VenueScreen> {
                           .any!((lokal) => lokal.id == wybranyLokal?.id)
                       ? Icon(
                           Icons.favorite,
-                          color: Colors.greenAccent.shade100,
+                          color: Color(0xFFDB200C),
                         )
                       : Icon(
                           Icons.favorite_border,
-                          color: Colors.greenAccent.shade100,
+                          color: Color(0xFFDB200C),
                         ),
                 ),
               ],
@@ -173,7 +173,7 @@ class _VenueScreenState extends ConsumerState<VenueScreen> {
             Expanded(
               flex: 5,
               child: Container(
-                color: Color.fromRGBO(254, 255, 218, 1),
+                color: kTlo,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -196,6 +196,12 @@ class _VenueScreenState extends ConsumerState<VenueScreen> {
                     Expanded(
                       child: ListView(
                         children: [
+                          LocalProperyty(
+                            wartosc: (wybranyLokal!.usersRating /
+                                    wybranyLokal.liczbaOcen)
+                                .toStringAsFixed(2),
+                            text: 'OCENA W APCE',
+                          ),
                           LocalProperyty(
                             wartosc: wybranyLokal?.ocena.toStringAsFixed(2),
                             text: 'OCENA',
@@ -226,12 +232,6 @@ class _VenueScreenState extends ConsumerState<VenueScreen> {
                             wartosc: wybranyLokal?.personel.toStringAsFixed(2),
                             text: 'PERSONEL',
                           ),
-                          LocalProperyty(
-                            wartosc: (wybranyLokal!.usersRating /
-                                    wybranyLokal.liczbaOcen)
-                                .toStringAsFixed(2),
-                            text: 'OCENA W APCE',
-                          ),
                         ],
                       ),
                     ),
@@ -250,7 +250,8 @@ class _VenueScreenState extends ConsumerState<VenueScreen> {
                                     CategorySlider(
                                       precyzja: 10,
                                       text: 'Ocena: ',
-                                      bgcolor: kTlo,
+                                      bgcolor1: Color(0xFFe8e8a5),
+                                      bgcolor2: Color(0xFFe8e8a5),
                                       maxSlide: 10,
                                       ocena: 5,
                                       onSlide: (value) async {
@@ -262,23 +263,37 @@ class _VenueScreenState extends ConsumerState<VenueScreen> {
                                       },
                                     ),
                                     Container(
-                                      decoration: kGradient,
+                                      decoration: BoxDecoration(
+                                        gradient: LinearGradient(
+                                          colors: [
+                                            Color(0xFFffb114),
+                                            Color(0xFFDB200C),
+                                          ],
+                                          begin: Alignment.centerLeft,
+                                          end: Alignment.centerRight,
+                                        ),
+                                        borderRadius: BorderRadius.circular(
+                                            15), // Zaokrąglenie rogów
+                                      ),
                                       child: TextButton(
-                                          onPressed: () {
-                                            setState(() {
-                                              is_schowed = false;
-                                              if (is_used) {
-                                                print(
-                                                    'ocena: ${ocena!.toInt()}');
-                                                addScoreByVenueAttributeId(
-                                                    venueAttributeId:
-                                                        wybranyLokal.id,
-                                                    additionalScore:
-                                                        ocena!.toInt());
-                                              }
-                                            });
-                                          },
-                                          child: Text('WYŚLIJ')),
+                                        onPressed: () {
+                                          setState(() {
+                                            is_schowed = false;
+                                            if (is_used) {
+                                              print('ocena: ${ocena!.toInt()}');
+                                              addScoreByVenueAttributeId(
+                                                  venueAttributeId:
+                                                      wybranyLokal.id,
+                                                  additionalScore:
+                                                      ocena!.toInt());
+                                            }
+                                          });
+                                        },
+                                        child: Text(
+                                          'WYŚLIJ',
+                                          style: kDesctyprionTextStyleWhite,
+                                        ),
+                                      ),
                                     )
                                   ],
                                 )
@@ -293,19 +308,41 @@ class _VenueScreenState extends ConsumerState<VenueScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         Container(
-                          decoration: kGradient,
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [
+                                Color(0xFFffb114),
+                                Color(0xFFDB200C),
+                              ],
+                              begin: Alignment.centerLeft,
+                              end: Alignment.centerRight,
+                            ),
+                            borderRadius:
+                                BorderRadius.circular(15), // Zaokrąglenie rogów
+                          ),
                           child: TextButton(
                             onPressed: () {
                               Navigator.popAndPushNamed(context, MapScreen.id);
                             },
                             child: Text(
                               'PROWADZ',
-                              style: kDesctyprionTextStyle,
+                              style: kDesctyprionTextStyleWhite,
                             ),
                           ),
                         ),
                         Container(
-                          decoration: kGradient,
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [
+                                Color(0xFFffb114),
+                                Color(0xFFDB200C),
+                              ],
+                              begin: Alignment.centerLeft,
+                              end: Alignment.centerRight,
+                            ),
+                            borderRadius:
+                                BorderRadius.circular(15), // Zaokrąglenie rogów
+                          ),
                           child: TextButton(
                             onPressed: () {
                               setState(() {
@@ -318,7 +355,7 @@ class _VenueScreenState extends ConsumerState<VenueScreen> {
                             },
                             child: Text(
                               'OCEŃ',
-                              style: kDesctyprionTextStyle,
+                              style: kDesctyprionTextStyleWhite,
                             ),
                           ),
                         ),

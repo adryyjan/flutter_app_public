@@ -12,13 +12,15 @@ import '../const.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   static const id = 'login';
-  const LoginScreen({super.key});
+  LoginScreen({super.key});
 
   @override
   ConsumerState<LoginScreen> createState() => _LoginScreenState();
 }
 
 class _LoginScreenState extends ConsumerState<LoginScreen> {
+  UserCredential? credentials;
+  List<Lokal> favFb = [];
   @override
   Future<List<Lokal>> pobierzLokale() async {
     FirebaseFirestore db = FirebaseFirestore.instance;
@@ -56,13 +58,54 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     }
   }
 
+  Future<String> getUser() async {
+    final authState = ref.read(authProvider);
+    credentials = await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: authState.email, password: authState.haslo);
+
+    return credentials!.user!.uid;
+  }
+
+  Future<List<Lokal>> pobierzUlubione() async {
+    FirebaseFirestore db = FirebaseFirestore.instance;
+    String userId = await getUser();
+
+    try {
+      DocumentSnapshot userDoc = await db.collection('users').doc(userId).get();
+
+      List<dynamic> venuesIdDynamic = userDoc.get('venue_ids');
+      List<String> venuesId = venuesIdDynamic.cast<String>();
+
+      List<Lokal> selectedVenues = [];
+
+      const int batchSize = 10;
+      for (int i = 0; i < venuesId.length; i += batchSize) {
+        int end =
+            (i + batchSize < venuesId.length) ? i + batchSize : venuesId.length;
+        List<String> batch = venuesId.sublist(i, end);
+
+        QuerySnapshot query =
+            await db.collection('venues').where('id', whereIn: batch).get();
+
+        for (var doc in query.docs) {
+          selectedVenues.add(Lokal.fromMap(doc.data() as Map<String, dynamic>));
+        }
+      }
+
+      return selectedVenues;
+    } catch (e) {
+      print("Error fetching venues: $e");
+      return [];
+    }
+  }
+
   Widget build(BuildContext context) {
     final listaLokali = ref.watch(lokalProvider);
 
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
-          color: Color(0xFFFFD700),
+          gradient: kGradientBR,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -94,13 +137,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   ),
                   Text(
                     'Powiedz czego oczekujesz od dzisiejszego wyjscia a My powiemy ci gdzie tego szukać :)',
-                    style: kDesctyprionTextStyle,
+                    style: kDesctyprionTextStyleWhite,
                   ),
                 ],
               ),
             ),
             Expanded(
-                flex: 5,
+                flex: 2,
                 child: Container(
                   decoration: kZakladka,
                   child: Column(
@@ -176,6 +219,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                     .read(ofertyProvider.notifier)
                                     .setOferty(oferty);
 
+                                favFb = await pobierzUlubione();
+                                ref
+                                    .read(ulubioneProvider.notifier)
+                                    .addLokale(favFb);
+                                for (int i = 0; i < lokale.length; i++) {
+                                  print(lokale[i].nazwaLokalu);
+                                }
                                 Navigator.popAndPushNamed(
                                     context, MainScreen.id);
                               }

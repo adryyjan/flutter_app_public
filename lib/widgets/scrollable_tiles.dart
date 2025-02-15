@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../API_PRIVATE.dart';
 import '../class/Location.dart';
@@ -45,86 +44,93 @@ class ScrollableTiles extends ConsumerWidget {
         },
         child: Card(
           elevation: 5,
-          color: Color(0xFFe8e8a5),
-          child: Padding(
-            padding: const EdgeInsets.all(10),
-            child: Row(
-              children: [
-                Expanded(
-                  flex: 3,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Expanded(
-                        flex: 2,
-                        child: Text(
-                          '$nazwa_loklau',
-                          style: TextStyle(
-                              fontSize: 23, fontWeight: FontWeight.w900),
-                        ),
-                      ),
-                      Expanded(
-                        child: Text('$opis'),
-                      )
-                    ],
-                  ),
-                ),
-                Expanded(
-                  child: Column(
-                    children: [
-                      Expanded(
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(20),
-                            ),
-                          ),
-                          width: double.infinity,
-                          child: Center(
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              children: [
-                                Icon(
-                                  Icons.star,
-                                  size: 30,
-                                ),
-                                Text(
-                                  '$ocena',
-                                  style: TextStyle(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.w900),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Expanded(
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.all(
-                              Radius.circular(20),
-                            ),
-                          ),
-                          width: double.infinity,
-                          child: Center(
-                            child: Text(
-                              '${(routeService.calculateDistance(LatLng(xCord, yCord), userLocation) / 1000).toStringAsFixed(1)} km',
-                              style: TextStyle(
-                                  fontSize: 15, fontWeight: FontWeight.w900),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+          child: Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  Color(0xFFffb114),
+                  Color(0xFFDB200C),
+                ],
+                begin: Alignment.centerLeft,
+                end: Alignment.centerRight,
+              ),
+              borderRadius: BorderRadius.circular(15),
+              boxShadow: [
+                BoxShadow(
+                  color: Color(0xFF1E3A8A).withValues(), // Czerwony blask
+                  blurRadius: 10, // Rozmycie
+                  spreadRadius: 5, // Rozciągnięcie
                 ),
               ],
+              // Zaokrąglenie rogów
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(10),
+              child: Row(
+                children: [
+                  Expanded(
+                    flex: 3,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          flex: 2,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                '$nazwa_loklau',
+                                style: TextStyle(
+                                    fontSize: 23, fontWeight: FontWeight.w900),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.only(right: 10),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    Icon(
+                                      Icons.star,
+                                      size: 30,
+                                    ),
+                                    Text(
+                                      '$ocena',
+                                      style: TextStyle(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w900),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Expanded(
+                          child: Text('$opis'),
+                        )
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    child: Column(
+                      children: [
+                        Expanded(
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.all(
+                                Radius.circular(20),
+                              ),
+                            ),
+                            width: double.infinity,
+                            child: Center(child: Text("data")),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),

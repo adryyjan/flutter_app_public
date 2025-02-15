@@ -23,11 +23,11 @@ class BottomMenu extends StatelessWidget {
       width: double.infinity,
       height: 65,
       decoration: BoxDecoration(
-        color: Color.fromRGBO(153, 136, 0, 0.7),
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(20),
-          topRight: Radius.circular(20),
-        ),
+        color: Color(0xFF1E3A8A),
+        // borderRadius: BorderRadius.only(
+        //   topLeft: Radius.circular(20),
+        //   topRight: Radius.circular(20),
+        // ),
       ),
       child: Column(
         children: [

@@ -9,7 +9,8 @@ class CategoryRodzajList extends ConsumerStatefulWidget {
   String text;
   List<String> lista;
   final String filterKey;
-  Color bgcolor;
+  Color bgcolor1;
+  Color bgcolor2;
 
   void Function(dynamic) onSelect;
 
@@ -19,7 +20,8 @@ class CategoryRodzajList extends ConsumerStatefulWidget {
     required this.onSelect,
     required this.filterKey,
     required this.lista,
-    required this.bgcolor,
+    required this.bgcolor1,
+    required this.bgcolor2,
   });
 
   @override
@@ -46,10 +48,15 @@ class _CategoryRodzajListState extends ConsumerState<CategoryRodzajList> {
       padding: const EdgeInsets.all(8.0),
       child: Container(
         decoration: BoxDecoration(
-          color: widget.bgcolor,
-          borderRadius: BorderRadius.all(
-            Radius.circular(10),
+          gradient: LinearGradient(
+            colors: [
+              widget.bgcolor1,
+              widget.bgcolor2,
+            ],
+            begin: Alignment.centerLeft,
+            end: Alignment.centerRight,
           ),
+          borderRadius: BorderRadius.circular(15), // Zaokrąglenie rogów
         ),
         width: double.infinity,
         height: 70,
@@ -60,13 +67,19 @@ class _CategoryRodzajListState extends ConsumerState<CategoryRodzajList> {
             children: [
               Text(
                 widget.text,
-                style: kDesctyprionTextStyle,
+                style: kDesctyprionTextStyleBlack,
               ),
               DropdownButton<String>(
                 value: widget.lista.contains(_getFilterValue(filter))
                     ? _getFilterValue(filter)
                     : widget.lista.first,
                 elevation: 16,
+                iconSize: 30.0,
+                icon: Padding(
+                  padding: EdgeInsets.all(0), // Zmniejszenie odstępu
+                  child: Icon(Icons.arrow_drop_down),
+                ),
+                style: TextStyle(fontSize: 20, color: Colors.black),
                 onChanged: (value) {
                   setState(() {
                     if (widget.filterKey == 'rodzajLokalu') {

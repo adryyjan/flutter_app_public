@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:funnavi/const.dart';
 
 import '../class/local_data.dart';
 import '../widgets/scrollable_tiles.dart';
@@ -53,7 +54,7 @@ class _ScrollableTileFinalSwipableState
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Color.fromRGBO(254, 255, 218, 1),
+      color: kTlo,
       child: GridView.builder(
         padding: const EdgeInsets.all(10.0),
         scrollDirection: Axis.vertical,

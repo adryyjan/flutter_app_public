@@ -14,7 +14,7 @@ import '../widgets/bottom_menu.dart';
 
 enum MarkerColor { zielony, ciemnoZielony, ulubiony, rozowy, czerwony }
 
-enum MarkerPng { beer, loop }
+enum MarkerPng { beer, loop, user_marker }
 
 class MapScreen extends ConsumerStatefulWidget {
   static const id = 'map';
@@ -39,18 +39,18 @@ class _MapScreenState extends ConsumerState<MapScreen> {
     super.initState();
   }
 
-  void _updateUserMarker(LatLng userLocation) {
+  void _updateUserMarker(LatLng userLocation, MarkerPng namePng) {
     setState(() {
       _markers.removeWhere((marker) => marker.markerId == _userMarkerId);
 
       final userMarker = Marker(
-        markerId: _userMarkerId,
-        position: userLocation,
-        infoWindow: const InfoWindow(
-          title: "Twoja lokalizacja",
-        ),
-        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue),
-      );
+          markerId: _userMarkerId,
+          position: userLocation,
+          infoWindow: const InfoWindow(
+            title: "Twoja lokalizacja",
+          ),
+          icon: _getMarkerPng(namePng),
+          anchor: Offset(0.5, 1));
 
       _markers.add(userMarker);
     });
@@ -65,23 +65,22 @@ class _MapScreenState extends ConsumerState<MapScreen> {
     }
 
     final marker = Marker(
-      onTap: () {
-        final userLocation = ref.read(userLocationProvider);
-        _selectedDestination = LatLng(x, y);
-        _calculateRoute(userLocation, LatLng(x, y));
-        _refreshRoute(userLocation, LatLng(x, y));
-        selectedX = x;
-        selectedY = y;
-      },
-      markerId: markerId,
-      position: LatLng(x, y),
-      infoWindow: InfoWindow(
-        title: name,
-        snippet: "$description, $rating ⭐",
-      ),
-      // icon: BitmapDescriptor.defaultMarkerWithHue(_getMarkerColor(color)),
-      icon: _getMarkerPng(namePng),
-    );
+        onTap: () {
+          final userLocation = ref.read(userLocationProvider);
+          _selectedDestination = LatLng(x, y);
+          _calculateRoute(userLocation, LatLng(x, y));
+          _refreshRoute(userLocation, LatLng(x, y));
+          selectedX = x;
+          selectedY = y;
+        },
+        markerId: markerId,
+        position: LatLng(x, y),
+        infoWindow: InfoWindow(
+          title: name,
+          snippet: "$description, $rating ⭐",
+        ),
+        icon: _getMarkerPng(namePng),
+        anchor: Offset(0.5, 0.5));
 
     setState(() {
       _markers.add(marker);
@@ -106,10 +105,23 @@ class _MapScreenState extends ConsumerState<MapScreen> {
   AssetMapBitmap _getMarkerPng(MarkerPng nazwa_png) {
     switch (nazwa_png) {
       case MarkerPng.beer:
-        return AssetMapBitmap('images/beer.png', height: 200);
+        return AssetMapBitmap(
+          'images/beer.png',
+          height: 32,
+          width: 32,
+        );
       case MarkerPng.loop:
-        return AssetMapBitmap('images/loop.png', height: 200);
-        ;
+        return AssetMapBitmap(
+          'images/loop.png',
+          height: 32,
+          width: 32,
+        );
+      case MarkerPng.user_marker:
+        return AssetMapBitmap(
+          'images/user.png',
+          height: 50,
+          width: 40,
+        );
     }
   }
 
@@ -243,7 +255,7 @@ class _MapScreenState extends ConsumerState<MapScreen> {
     final filtrowane = ref.watch(filteredLocalsProvider);
     setState(() {
       ref.listen<LatLng>(userLocationProvider, (previous, next) {
-        _updateUserMarker(next);
+        _updateUserMarker(next, MarkerPng.user_marker);
 
         _updatePolylineWithUserPosition(next);
         if (previous != null) {
@@ -273,7 +285,7 @@ class _MapScreenState extends ConsumerState<MapScreen> {
     }
 
     _updatePolylineWithUserPosition(userLocation);
-    _updateUserMarker(userLocation);
+    _updateUserMarker(userLocation, MarkerPng.user_marker);
 
     return Scaffold(
       resizeToAvoidBottomInset: true,
@@ -306,6 +318,10 @@ class _MapScreenState extends ConsumerState<MapScreen> {
                         MarkerPng.beer);
                   }
                 }
+                print('ULUBIONE');
+                for (int i = 0; i < ulubione.length; i++) {
+                  print(ulubione[i].nazwaLokalu);
+                }
 
                 if (wybranyLokal != null) {
                   _addMarker(
@@ -320,6 +336,9 @@ class _MapScreenState extends ConsumerState<MapScreen> {
                       LatLng(wybranyLokal.xCord, wybranyLokal.yCord));
                 }
 
+                print('WYBRANY');
+                print(wybranyLokal?.nazwaLokalu);
+
                 if (filtrowane != null) {
                   for (final lokal in filtrowane) {
                     _addMarker(
@@ -332,12 +351,16 @@ class _MapScreenState extends ConsumerState<MapScreen> {
                         MarkerPng.loop);
                   }
                 }
+                print('FILTRY');
+                for (int i = 0; i < filtrowane.length; i++) {
+                  print(filtrowane[i].nazwaLokalu);
+                }
 
                 final destination =
                     LatLng(wybranyLokal!.xCord, wybranyLokal.yCord);
                 _refreshRoute(userLocation, destination);
 
-                _updateUserMarker(userLocation);
+                _updateUserMarker(userLocation, MarkerPng.user_marker);
                 _updatePolylineWithUserPosition(userLocation);
               }
             },
@@ -354,7 +377,7 @@ class _MapScreenState extends ConsumerState<MapScreen> {
             left: 16,
             right: 16,
             child: Container(
-              decoration: kGradient,
+              decoration: kGradientYO,
               child: odleglosc == null
                   ? Text(
                       textAlign: TextAlign.center,

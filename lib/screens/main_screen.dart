@@ -26,7 +26,7 @@ class _MainScreenState extends ConsumerState<MainScreen> {
   wybor selected_choice = wybor.popularne;
   UserCredential? credentials;
   List<Lokal> favFb = [];
-
+  //
   Future<List<Lokal>> pobierzUlubione() async {
     FirebaseFirestore db = FirebaseFirestore.instance;
     String userId = await getUser();
@@ -68,11 +68,15 @@ class _MainScreenState extends ConsumerState<MainScreen> {
     return credentials!.user!.uid;
   }
 
+  ///todo: oddzielna klasa na wczytywanie bo w 2 ekranach już jest
+
   @override
   Widget build(BuildContext context) {
     final filtrowane = ref.watch(filteredLocalsProvider);
     final listaLokali = ref.watch(lokalProvider);
     final listaOfert = ref.watch(ofertyProvider);
+    var favFb = ref.watch(ulubioneProvider);
+    final filter = ref.watch(filterProvider);
 
     return Scaffold(
       body: Container(
@@ -99,9 +103,12 @@ class _MainScreenState extends ConsumerState<MainScreen> {
                 },
               ),
             ),
+            SizedBox(
+              height: 10,
+            ),
             Container(
               decoration: BoxDecoration(
-                color: Color.fromRGBO(153, 136, 0, 0.7),
+                color: kTlo,
                 borderRadius: BorderRadius.all(
                   Radius.circular(20),
                 ),
@@ -188,6 +195,9 @@ class _MainScreenState extends ConsumerState<MainScreen> {
                 ],
               ),
             ),
+            SizedBox(
+              height: 10,
+            ),
             Expanded(
               child: selected_choice == wybor.popularne
                   ? ScrollableTileFinalSwipable(
@@ -195,7 +205,7 @@ class _MainScreenState extends ConsumerState<MainScreen> {
                       lista: listaLokali,
                       listaUlubionych: favFb,
                     )
-                  : selected_choice == wybor.filtrowane
+                  : (selected_choice == wybor.filtrowane)
                       ? filtrowane.isNotEmpty
                           ? ScrollableTileFinalSwipable(
                               key: ValueKey(filtrowane),
@@ -203,12 +213,19 @@ class _MainScreenState extends ConsumerState<MainScreen> {
                               listaUlubionych: favFb,
                             )
                           : Center(
-                              child: Text('Niestety, za dużo chcesz od życia'),
+                              child: Text(
+                                'Niestety, za dużo chcesz od życia :?',
+                                style: kTitleTextStyle,
+                                textAlign: TextAlign.center,
+                              ),
                             )
                       : favFb.isNotEmpty
                           ? ScrollableTileFinalNormal(lista: favFb)
                           : Center(
-                              child: Text('Wariacie dodaj cos do ulubionych'),
+                              child: Text(
+                                'Wariacie dodaj cos do ulubionych',
+                                style: kTitleTextStyle,
+                              ),
                             ),
             ),
             BottomMenu(

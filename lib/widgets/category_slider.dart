@@ -8,7 +8,8 @@ class CategorySlider extends StatefulWidget {
   double ocena;
   void Function(double) onSlide;
   double maxSlide;
-  Color bgcolor;
+  Color bgcolor1;
+  Color bgcolor2;
   int precyzja;
 
   CategorySlider(
@@ -17,7 +18,8 @@ class CategorySlider extends StatefulWidget {
       required this.onSlide,
       required this.maxSlide,
       required this.ocena,
-      required this.bgcolor,
+      required this.bgcolor1,
+      required this.bgcolor2,
       required this.precyzja});
 
   @override
@@ -33,11 +35,22 @@ class _CategorySliderState extends State<CategorySlider> {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Container(
+        // decoration: BoxDecoration(
+        //   color: widget.bgcolor1,
+        //   borderRadius: BorderRadius.all(
+        //     Radius.circular(10),
+        //   ),
+        // ),
         decoration: BoxDecoration(
-          color: widget.bgcolor,
-          borderRadius: BorderRadius.all(
-            Radius.circular(10),
+          gradient: LinearGradient(
+            colors: [
+              widget.bgcolor1,
+              widget.bgcolor2,
+            ],
+            begin: Alignment.centerLeft,
+            end: Alignment.centerRight,
           ),
+          borderRadius: BorderRadius.circular(15), // Zaokrąglenie rogów
         ),
         width: double.infinity,
         height: 70,
@@ -50,7 +63,7 @@ class _CategorySliderState extends State<CategorySlider> {
                 flex: 2,
                 child: Text(
                   widget.text,
-                  style: kDesctyprionTextStyle,
+                  style: kDesctyprionTextStyleBlack,
                 ),
               ),
               Expanded(
@@ -58,7 +71,7 @@ class _CategorySliderState extends State<CategorySlider> {
                   rating == -1
                       ? widget.ocena.toStringAsFixed(2)
                       : rating.toStringAsFixed(2),
-                  style: kDesctyprionTextStyle,
+                  style: kDesctyprionTextStyleBlack,
                 ),
               ),
               Expanded(

@@ -11,6 +11,17 @@ class LokalFilterService {
 
   List<Lokal> filtrujLokale(
       List<Lokal> lista, FilterData filtry, double userLat, double userLng) {
+    if (filtry.ocena == null &&
+        filtry.odleglosc == null &&
+        filtry.strefaPalenia == null &&
+        filtry.bezpieczenstwo == null &&
+        filtry.przystosowany == null &&
+        filtry.naRandke == null &&
+        filtry.halas == null &&
+        filtry.glownaSpecjalnosc == null &&
+        filtry.rodzajLokalu == null) {
+      lista = [];
+    }
     return lista.where((lokal) {
       if (!_checkRodzajLokalu(filtry, lokal)) return false;
       if (!_checkGlownaSpecjalnosc(filtry, lokal)) return false;

@@ -6,14 +6,17 @@ class CategorySwitch extends StatefulWidget {
   String text;
   bool isSwitched;
   void Function(bool) onSwitch;
-  Color bgcolor;
+  Color bgcolor1;
+  Color bgcolor2;
 
-  CategorySwitch(
-      {super.key,
-      required this.isSwitched,
-      required this.text,
-      required this.onSwitch,
-      required this.bgcolor});
+  CategorySwitch({
+    super.key,
+    required this.isSwitched,
+    required this.text,
+    required this.onSwitch,
+    required this.bgcolor1,
+    required this.bgcolor2,
+  });
 
   @override
   State<CategorySwitch> createState() => _CategoryRodzajState();
@@ -28,10 +31,15 @@ class _CategoryRodzajState extends State<CategorySwitch> {
       padding: const EdgeInsets.all(8.0),
       child: Container(
         decoration: BoxDecoration(
-          color: widget.bgcolor,
-          borderRadius: BorderRadius.all(
-            Radius.circular(10),
+          gradient: LinearGradient(
+            colors: [
+              widget.bgcolor1,
+              widget.bgcolor2,
+            ],
+            begin: Alignment.centerLeft,
+            end: Alignment.centerRight,
           ),
+          borderRadius: BorderRadius.circular(15), // Zaokrąglenie rogów
         ),
         width: double.infinity,
         height: 70,
@@ -42,7 +50,7 @@ class _CategoryRodzajState extends State<CategorySwitch> {
             children: [
               Text(
                 widget.text,
-                style: kDesctyprionTextStyle,
+                style: kDesctyprionTextStyleBlack,
               ),
               Switch(
                 value: isfirts ? widget.isSwitched : switcher,

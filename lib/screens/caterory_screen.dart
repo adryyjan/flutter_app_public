@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:funnavi/widgets/bottom_menu.dart';
@@ -12,7 +10,6 @@ import '../class/LokalFilter.dart';
 import '../class/local_data.dart';
 import '../class/riverpod.dart';
 import '../const.dart';
-import '../data/jsonData.dart';
 import '../widgets/category_switch.dart';
 import 'main_screen.dart';
 
@@ -63,14 +60,18 @@ class _CategoryScreenState extends ConsumerState<CategoryScreen> {
   void initState() {
     super.initState();
 
-    final Map<String, dynamic> parsedData = jsonDecode(jsonData);
-    List<Lokal> daneWejsciowe = parsedData.entries.map((entry) {
-      return Lokal.fromMap(entry.value);
-    }).toList();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final listaLokaliRiverpod = ref.read(lokalProvider);
 
-    lokale = daneWejsciowe.map((lokal) => Lokal.copy(lokal)).toList();
-    lokale!.sort((a, b) => b.ocena.compareTo(a.ocena));
-    lokale_temp = lokale;
+      if (listaLokaliRiverpod!.isNotEmpty) {
+        setState(() {
+          lokale =
+              listaLokaliRiverpod.map((lokal) => Lokal.copy(lokal)).toList();
+          lokale!.sort((a, b) => b.ocena.compareTo(a.ocena));
+          lokale_temp = List.from(lokale!);
+        });
+      }
+    });
   }
 
   @override
@@ -93,16 +94,19 @@ class _CategoryScreenState extends ConsumerState<CategoryScreen> {
                       const SizedBox(height: 30),
                       Expanded(
                         child: Container(
-                          color: Color.fromRGBO(254, 255, 218, 1),
+                          color: kTlo,
                           child: SingleChildScrollView(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               children: [
                                 CategoryRodzajList(
-                                  bgcolor: filter.rodzajLokalu == null
+                                  bgcolor1: filter.rodzajLokalu == null
                                       ? Color(0xFFe8e8a5)
-                                      : Color.fromRGBO(255, 227, 0, 1),
+                                      : Color(0xFFffb114),
+                                  bgcolor2: filter.rodzajLokalu == null
+                                      ? Color(0xFFe8e8a5)
+                                      : Color(0xFFDB200C),
                                   filterKey: 'rodzajLokalu',
                                   lista: _rodzajLokalu,
                                   text: 'Rodzaj lokalu',
@@ -113,12 +117,15 @@ class _CategoryScreenState extends ConsumerState<CategoryScreen> {
                                   },
                                 ),
                                 CategoryRodzajList(
-                                  bgcolor: filter.glownaSpecjalnosc == null
+                                  bgcolor1: filter.glownaSpecjalnosc == null
                                       ? Color(0xFFe8e8a5)
-                                      : Color.fromRGBO(255, 227, 0, 1),
+                                      : Color(0xFFffb114),
+                                  bgcolor2: filter.glownaSpecjalnosc == null
+                                      ? Color(0xFFe8e8a5)
+                                      : Color(0xFFDB200C),
                                   filterKey: 'glownaSpecjalnosc',
                                   lista: _glownaSpecka,
-                                  text: 'Główna specjalność',
+                                  text: 'Specjalność',
                                   onSelect: (value) {
                                     setState(() {
                                       filter.glownaSpecjalnosc = value;
@@ -126,10 +133,14 @@ class _CategoryScreenState extends ConsumerState<CategoryScreen> {
                                   },
                                 ),
                                 CategorySwitch(
-                                  bgcolor: filter.strefaPalenia == null ||
+                                  bgcolor1: filter.strefaPalenia == null ||
                                           filter.strefaPalenia == false
                                       ? Color(0xFFe8e8a5)
-                                      : Color.fromRGBO(255, 227, 0, 1),
+                                      : Color(0xFFffb114),
+                                  bgcolor2: filter.strefaPalenia == null ||
+                                          filter.strefaPalenia == false
+                                      ? Color(0xFFe8e8a5)
+                                      : Color(0xFFDB200C),
                                   isSwitched: filter.strefaPalenia ?? false,
                                   text: 'Strefa palenia',
                                   onSwitch: (value) {
@@ -139,10 +150,14 @@ class _CategoryScreenState extends ConsumerState<CategoryScreen> {
                                   },
                                 ),
                                 CategorySwitch(
-                                  bgcolor: filter.naRandke == null ||
+                                  bgcolor1: filter.naRandke == null ||
                                           filter.naRandke == false
                                       ? Color(0xFFe8e8a5)
-                                      : Color.fromRGBO(255, 227, 0, 1),
+                                      : Color(0xFFffb114),
+                                  bgcolor2: filter.naRandke == null ||
+                                          filter.naRandke == false
+                                      ? Color(0xFFe8e8a5)
+                                      : Color(0xFFDB200C),
                                   isSwitched: filter.naRandke == null
                                       ? false
                                       : filter.naRandke!,
@@ -154,10 +169,14 @@ class _CategoryScreenState extends ConsumerState<CategoryScreen> {
                                   },
                                 ),
                                 CategorySwitch(
-                                  bgcolor: filter.przystosowany == null ||
+                                  bgcolor1: filter.przystosowany == null ||
                                           filter.przystosowany == false
                                       ? Color(0xFFe8e8a5)
-                                      : Color.fromRGBO(255, 227, 0, 1),
+                                      : Color(0xFFffb114),
+                                  bgcolor2: filter.przystosowany == null ||
+                                          filter.przystosowany == false
+                                      ? Color(0xFFe8e8a5)
+                                      : Color(0xFFDB200C),
                                   isSwitched: filter.przystosowany == null
                                       ? false
                                       : filter.przystosowany!,
@@ -170,9 +189,12 @@ class _CategoryScreenState extends ConsumerState<CategoryScreen> {
                                 ),
                                 CategorySlider(
                                   precyzja: 25,
-                                  bgcolor: filter.ocena == null
+                                  bgcolor1: filter.ocena == null
                                       ? Color(0xFFe8e8a5)
-                                      : Color.fromRGBO(255, 227, 0, 1),
+                                      : Color(0xFFffb114),
+                                  bgcolor2: filter.ocena == null
+                                      ? Color(0xFFe8e8a5)
+                                      : Color(0xFFDB200C),
                                   text: 'Ocena',
                                   onSlide: (value) {
                                     setState(() {
@@ -188,9 +210,12 @@ class _CategoryScreenState extends ConsumerState<CategoryScreen> {
                                 ),
                                 CategorySlider(
                                   precyzja: 25,
-                                  bgcolor: filter.odleglosc == null
+                                  bgcolor1: filter.odleglosc == null
                                       ? Color(0xFFe8e8a5)
-                                      : Color.fromRGBO(255, 227, 0, 1),
+                                      : Color(0xFFffb114),
+                                  bgcolor2: filter.odleglosc == null
+                                      ? Color(0xFFe8e8a5)
+                                      : Color(0xFFDB200C),
                                   text: 'Odległość',
                                   onSlide: (value) {
                                     setState(() {
@@ -206,9 +231,12 @@ class _CategoryScreenState extends ConsumerState<CategoryScreen> {
                                 ),
                                 CategorySlider(
                                   precyzja: 25,
-                                  bgcolor: filter.halas == null
+                                  bgcolor1: filter.halas == null
                                       ? Color(0xFFe8e8a5)
-                                      : Color.fromRGBO(255, 227, 0, 1),
+                                      : Color(0xFFffb114),
+                                  bgcolor2: filter.halas == null
+                                      ? Color(0xFFe8e8a5)
+                                      : Color(0xFFDB200C),
                                   text: 'Hałas',
                                   onSlide: (value) {
                                     setState(() {
@@ -222,9 +250,12 @@ class _CategoryScreenState extends ConsumerState<CategoryScreen> {
                                 ),
                                 CategorySlider(
                                   precyzja: 25,
-                                  bgcolor: filter.bezpieczenstwo == null
+                                  bgcolor1: filter.bezpieczenstwo == null
                                       ? Color(0xFFe8e8a5)
-                                      : Color.fromRGBO(255, 227, 0, 1),
+                                      : Color(0xFFffb114),
+                                  bgcolor2: filter.bezpieczenstwo == null
+                                      ? Color(0xFFe8e8a5)
+                                      : Color(0xFFDB200C),
                                   text: 'Bezpieczny',
                                   onSlide: (value) {
                                     setState(() {
@@ -252,7 +283,7 @@ class _CategoryScreenState extends ConsumerState<CategoryScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     Container(
-                      decoration: kGradient,
+                      decoration: kGradientYO,
                       child: TextButton(
                         onPressed: () {
                           print(filter.odleglosc);
@@ -268,14 +299,14 @@ class _CategoryScreenState extends ConsumerState<CategoryScreen> {
 
                           Navigator.popAndPushNamed(context, MainScreen.id);
                         },
-                        child: const Text(
+                        child: Text(
                           'OK',
-                          style: kDesctyprionTextStyle,
+                          style: kDesctyprionTextStyleWhite,
                         ),
                       ),
                     ),
                     Container(
-                      decoration: kGradient,
+                      decoration: kGradientYO,
                       child: TextButton(
                         onPressed: () {
                           setState(() {
@@ -301,9 +332,9 @@ class _CategoryScreenState extends ConsumerState<CategoryScreen> {
                                 .updateFilteredLocals(lokaleFilter);
                           });
                         },
-                        child: const Text(
+                        child: Text(
                           'Resetuj filtry',
-                          style: kDesctyprionTextStyle,
+                          style: kDesctyprionTextStyleWhite,
                         ),
                       ),
                     ),

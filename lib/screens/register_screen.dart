@@ -60,7 +60,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
-          color: Color(0xFFFFD700),
+          gradient: kGradientBR,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -92,13 +92,13 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                   ),
                   Text(
                     'Załóż konto i nie zastanawiaj się już nigdy gdzie spedzisz wieczór- my zrobimy to za Ciebie :0',
-                    style: kDesctyprionTextStyle,
+                    style: kDesctyprionTextStyleWhite,
                   ),
                 ],
               ),
             ),
             Expanded(
-                flex: 5,
+                flex: 2,
                 child: Container(
                   decoration: kZakladka,
                   child: Column(

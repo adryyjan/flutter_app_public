@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:funnavi/const.dart';
 import 'package:funnavi/widgets/scrollable_tiles.dart';
 
 import '../class/local_data.dart';
@@ -54,7 +55,7 @@ class _ScrollableTileFinalNormalState
   Widget build(BuildContext context) {
     final ulubioneLokale = ref.watch(ulubioneProvider);
     return Container(
-      color: Color.fromRGBO(254, 255, 218, 1),
+      color: kTlo,
       child: GridView.builder(
         padding: EdgeInsets.all(10.0),
         scrollDirection: Axis.vertical,

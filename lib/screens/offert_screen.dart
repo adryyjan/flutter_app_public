@@ -48,7 +48,7 @@ class _OffertScreenState extends ConsumerState<OffertScreen> {
             Expanded(
               flex: 5,
               child: Container(
-                color: Color.fromRGBO(254, 255, 218, 1),
+                color: kTlo,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -101,7 +101,18 @@ class _OffertScreenState extends ConsumerState<OffertScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         Container(
-                          decoration: kGradient,
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [
+                                Color(0xFFffb114),
+                                Color(0xFFDB200C),
+                              ],
+                              begin: Alignment.centerLeft,
+                              end: Alignment.centerRight,
+                            ),
+                            borderRadius:
+                                BorderRadius.circular(15), // Zaokrąglenie rogów
+                          ),
                           child: TextButton(
                             onPressed: () {
                               Lokal znalezionyLokal = listaLokali!.firstWhere(
@@ -114,12 +125,23 @@ class _OffertScreenState extends ConsumerState<OffertScreen> {
                             },
                             child: Text(
                               'POKAŻ LOKAL',
-                              style: kDesctyprionTextStyle,
+                              style: kDesctyprionTextStyleWhite,
                             ),
                           ),
                         ),
                         Container(
-                          decoration: kGradient,
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [
+                                Color(0xFFffb114),
+                                Color(0xFFDB200C),
+                              ],
+                              begin: Alignment.centerLeft,
+                              end: Alignment.centerRight,
+                            ),
+                            borderRadius:
+                                BorderRadius.circular(15), // Zaokrąglenie rogów
+                          ),
                           child: TextButton(
                             onPressed: () {
                               Lokal znalezionyLokal = listaLokali!.firstWhere(
@@ -131,7 +153,7 @@ class _OffertScreenState extends ConsumerState<OffertScreen> {
                             },
                             child: Text(
                               'PROWADŻ',
-                              style: kDesctyprionTextStyle,
+                              style: kDesctyprionTextStyleWhite,
                             ),
                           ),
                         ),

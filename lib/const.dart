@@ -1,26 +1,36 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
-const kTitleTextStyle = TextStyle(fontSize: 30, fontWeight: FontWeight.w900);
+var kTitleTextStyle =
+    GoogleFonts.poppins(fontSize: 70, fontWeight: FontWeight.w900);
 
-const kDesctyprionTextStyle = TextStyle(
-  fontSize: 20,
-  fontWeight: FontWeight.w900,
-  color: Colors.black,
-);
+var kDesctyprionTextStyleWhite = GoogleFonts.montserrat(
+    fontSize: 20, fontWeight: FontWeight.w900, color: Colors.white);
 
-const kBiggerTitleTextStyle =
-    TextStyle(fontSize: 40, fontWeight: FontWeight.w900);
+var kDesctyprionTextStyleBlack = GoogleFonts.montserrat(
+    fontSize: 20, fontWeight: FontWeight.w900, color: Colors.black);
 
-var kGradient = BoxDecoration(
+var kBiggerTitleTextStyle = GoogleFonts.poppins(
+    fontSize: 70, fontWeight: FontWeight.w900, color: Colors.white);
+
+var kGradientYO = BoxDecoration(
   gradient: const LinearGradient(
     colors: [Color(0xFFffb114), Color(0xFFFFD700)],
     begin: Alignment.topCenter,
     end: Alignment.bottomCenter,
   ),
-  borderRadius: BorderRadius.circular(15), // Zaokrąglenie rogów
+  borderRadius: BorderRadius.circular(15),
+);
+var kGradientBR = LinearGradient(
+  colors: [
+    Color(0xFF1E3A8A),
+    Color(0xFFDB200C),
+  ],
+  begin: Alignment.topCenter,
+  end: Alignment.bottomCenter,
 );
 
-const kTlo = Color.fromRGBO(254, 255, 218, 1);
+const kTlo = Color(0xFFE0E0E0);
 
 const kZakladka = BoxDecoration(
   color: kTlo,

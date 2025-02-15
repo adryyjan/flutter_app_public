@@ -41,12 +41,13 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
   Widget build(BuildContext context) {
     permision();
     return Scaffold(
+      backgroundColor: kTlo,
       body: Column(
         children: [
           Expanded(
             flex: 2,
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.end,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Image.asset(
@@ -57,12 +58,12 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                 const SizedBox(
                   height: 20,
                 ),
-                const Text(
+                Text(
                   'FUNNAVI',
                   style: kTitleTextStyle,
                 ),
                 const SizedBox(
-                  height: 50,
+                  height: 20,
                 ),
               ],
             ),
@@ -70,40 +71,45 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
           Expanded(
             flex: 3,
             child: Container(
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
+                gradient: kGradientBR,
                 borderRadius: BorderRadius.only(
                   topRight: Radius.circular(40),
                   topLeft: Radius.circular(40),
                 ),
-                color: Color(0xFFFFD700),
-                border: Border(
-                  top: BorderSide(color: Colors.black),
-                ),
+                // color: Color(0xFFDB200C),
               ),
               // color: Colors.red,
               child: Padding(
                 padding: const EdgeInsets.all(15.0),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     const SizedBox(
                       height: 45,
                     ),
-                    const Text(
+                    Text(
                       'Witaj !',
                       style: kBiggerTitleTextStyle,
                     ),
                     const SizedBox(
                       height: 45,
                     ),
-                    const Expanded(
+                    Expanded(
                       child: Column(
                         children: [
                           Text(
-                              'Zarejestruj się już teraz aby zawsze mić pomysł na miejscókę z ekipą ! ;)'),
-                          Text('TY wybierasz vibe, My dajemy ci spoty'),
+                            'Zarejestruj się już teraz aby zawsze mić pomysł na miejscókę z ekipą ! ;)',
+                            style: kDesctyprionTextStyleBlack,
+                          ),
                           Text(
-                              'Może za rogiem czeka Twój nowy ulubony bar ?👀👀'),
+                            'TY wybierasz vibe, My dajemy ci spoty',
+                            style: kDesctyprionTextStyleBlack,
+                          ),
+                          Text(
+                            'Może za rogiem czeka Twój nowy ulubony bar ?  👀👀',
+                            style: kDesctyprionTextStyleBlack,
+                          ),
                         ],
                       ),
                     ),
