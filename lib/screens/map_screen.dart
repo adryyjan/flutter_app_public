@@ -37,11 +37,6 @@ class _MapScreenState extends ConsumerState<MapScreen> {
   double? selectedX;
   double? selectedY;
 
-  @override
-  void initState() {
-    super.initState();
-  }
-
   void _updateUserMarker(LatLng userLocation, MarkerPng namePng) {
     setState(() {
       _markers.removeWhere((marker) => marker.markerId == _userMarkerId);

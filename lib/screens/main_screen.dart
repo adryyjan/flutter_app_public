@@ -139,7 +139,7 @@ class _MainScreenState extends ConsumerState<MainScreen> {
                         Icons.local_fire_department,
                         size: 40,
                         color: selected_choice == wybor.popularne
-                            ? Colors.red
+                            ? Color(0xFFDB200C)
                             : Color(0xFF1E3A8A),
                       ),
                     ),
@@ -160,7 +160,7 @@ class _MainScreenState extends ConsumerState<MainScreen> {
                         Icons.manage_search_outlined,
                         size: 40,
                         color: selected_choice == wybor.filtrowane
-                            ? Colors.red
+                            ? Color(0xFFDB200C)
                             : Color(0xFF1E3A8A),
                       ),
                     ),
@@ -183,7 +183,7 @@ class _MainScreenState extends ConsumerState<MainScreen> {
                         Icons.favorite_rounded,
                         size: 40,
                         color: selected_choice == wybor.ulubione
-                            ? Colors.red
+                            ? Color(0xFFDB200C)
                             : Color(0xFF1E3A8A),
                       ),
                     ),

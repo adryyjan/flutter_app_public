@@ -30,14 +30,12 @@ class _OffertScreenState extends ConsumerState<OffertScreen> {
         ),
         child: Column(
           children: [
-            const SizedBox(height: 30),
-
             SizedBox(
-              height: 20,
+              height: 70,
             ),
             Text(
               '${wybranaOferta?.nazwa}',
-              style: TextStyle(fontSize: 40, fontWeight: FontWeight.w900),
+              style: kTitleTextStyleBlack,
             ),
             SizedBox(
               height: 5,
@@ -61,10 +59,7 @@ class _OffertScreenState extends ConsumerState<OffertScreen> {
                           padding: const EdgeInsets.all(8.0),
                           child: Text(
                             wybranaOferta!.oferta,
-                            style: TextStyle(
-                              fontSize: 25,
-                              fontWeight: FontWeight.w900,
-                            ),
+                            style: kSmallerTitleTextStyleBlack,
                           ),
                         ),
                       ],
@@ -103,14 +98,7 @@ class _OffertScreenState extends ConsumerState<OffertScreen> {
                       children: [
                         Container(
                           decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              colors: [
-                                Color(0xFFffb114),
-                                Color(0xFFDB200C),
-                              ],
-                              begin: Alignment.centerLeft,
-                              end: Alignment.centerRight,
-                            ),
+                            gradient: kGradientBR,
                             borderRadius:
                                 BorderRadius.circular(15), // Zaokrąglenie rogów
                           ),
@@ -132,14 +120,7 @@ class _OffertScreenState extends ConsumerState<OffertScreen> {
                         ),
                         Container(
                           decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              colors: [
-                                Color(0xFFffb114),
-                                Color(0xFFDB200C),
-                              ],
-                              begin: Alignment.centerLeft,
-                              end: Alignment.centerRight,
-                            ),
+                            gradient: kGradientBR,
                             borderRadius:
                                 BorderRadius.circular(15), // Zaokrąglenie rogów
                           ),

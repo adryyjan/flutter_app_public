@@ -29,7 +29,7 @@ class _VenueScreenState extends ConsumerState<VenueScreen> {
     required int additionalScore,
   }) async {
     FirebaseFirestore db = FirebaseFirestore.instance;
-
+    print("funkcja");
     try {
       QuerySnapshot querySnapshot = await db
           .collection('venues')
@@ -104,69 +104,9 @@ class _VenueScreenState extends ConsumerState<VenueScreen> {
           children: [
             const SizedBox(height: 70),
 
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Text(
-                  '${wybranyLokal?.nazwaLokalu}',
-                  style: TextStyle(fontSize: 40, fontWeight: FontWeight.w900),
-                ),
-                IconButton(
-                  iconSize: 70,
-                  onPressed: () {
-                    setState(() {
-                      if (ulubioneLokale
-                          .any!((lokal) => lokal.id == wybranyLokal?.id)) {
-                        setState(() {
-                          ref
-                              .read(ulubioneProvider.notifier)
-                              .removeFromFavorites(wybranyLokal!);
-                          removeVenueFromUser(wybranyLokal!.id);
-                        });
-                      } else {
-                        ulubioneLokale.add(wybranyLokal!);
-                        addVenueToUser(wybranyLokal.id);
-                      }
-                    });
-                  },
-                  icon: ulubioneLokale
-                          .any!((lokal) => lokal.id == wybranyLokal?.id)
-                      ? Icon(
-                          Icons.favorite,
-                          color: Color(0xFFDB200C),
-                        )
-                      : Icon(
-                          Icons.favorite_border,
-                          color: Color(0xFFDB200C),
-                        ),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 5,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Card(
-                  elevation: 10,
-                  child: TextButton(
-                    onPressed: () {
-                      print('menu');
-                    },
-                    child: Text('MENU'),
-                  ),
-                ),
-                Card(
-                  elevation: 10,
-                  child: TextButton(
-                    onPressed: () {
-                      print('zdjecia');
-                    },
-                    child: Text('ZDJECIA'),
-                  ),
-                ),
-              ],
+            Text(
+              '${wybranyLokal?.nazwaLokalu}',
+              style: kTitleTextStyleBlack,
             ),
             SizedBox(
               height: 30,
@@ -182,15 +122,38 @@ class _VenueScreenState extends ConsumerState<VenueScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            'STATYSTYKI LOKLAU',
-                            style: TextStyle(
-                              fontSize: 25,
-                              fontWeight: FontWeight.w900,
-                            ),
-                          ),
+                        Text(
+                          'STATYSTYKI',
+                          style: kSmallerTitleTextStyleBlack,
+                        ),
+                        IconButton(
+                          iconSize: 70,
+                          onPressed: () {
+                            setState(() {
+                              if (ulubioneLokale.any!(
+                                  (lokal) => lokal.id == wybranyLokal?.id)) {
+                                setState(() {
+                                  ref
+                                      .read(ulubioneProvider.notifier)
+                                      .removeFromFavorites(wybranyLokal!);
+                                  removeVenueFromUser(wybranyLokal!.id);
+                                });
+                              } else {
+                                ulubioneLokale.add(wybranyLokal!);
+                                addVenueToUser(wybranyLokal.id);
+                              }
+                            });
+                          },
+                          icon: ulubioneLokale
+                                  .any!((lokal) => lokal.id == wybranyLokal?.id)
+                              ? Icon(
+                                  Icons.favorite,
+                                  color: Color(0xFFDB200C),
+                                )
+                              : Icon(
+                                  Icons.favorite_border,
+                                  color: Color(0xFFDB200C),
+                                ),
                         ),
                       ],
                     ),
@@ -251,29 +214,26 @@ class _VenueScreenState extends ConsumerState<VenueScreen> {
                                     CategorySlider(
                                       precyzja: 10,
                                       text: 'Ocena: ',
-                                      bgcolor1: Color(0xFFe8e8a5),
-                                      bgcolor2: Color(0xFFe8e8a5),
+                                      bgcolor1: ocena == null
+                                          ? kBgDarker
+                                          : Color(0xFFffb114),
+                                      bgcolor2: ocena == null
+                                          ? kBgDarker
+                                          : Color(0xFFDB200C),
                                       maxSlide: 10,
                                       ocena: ocena == null ? 5.0 : ocena!,
                                       onSlide: (value) async {
                                         setState(() {
                                           print('ocena: ${ocena}');
                                           ocena = value;
+                                          is_used = true;
                                         });
                                       },
                                     ),
                                     Container(
                                       decoration: BoxDecoration(
-                                        gradient: LinearGradient(
-                                          colors: [
-                                            Color(0xFFffb114),
-                                            Color(0xFFDB200C),
-                                          ],
-                                          begin: Alignment.centerLeft,
-                                          end: Alignment.centerRight,
-                                        ),
-                                        borderRadius: BorderRadius.circular(
-                                            15), // Zaokrąglenie rogów
+                                        gradient: kGradientBR,
+                                        borderRadius: BorderRadius.circular(15),
                                       ),
                                       child: TextButton(
                                         onPressed: () {
@@ -281,6 +241,8 @@ class _VenueScreenState extends ConsumerState<VenueScreen> {
                                             is_schowed = false;
                                             if (is_used) {
                                               print('ocena: ${ocena!.toInt()}');
+                                              print("WYWYLANE");
+                                              print((ocena! / 2).toInt());
                                               addScoreByVenueAttributeId(
                                                   venueAttributeId:
                                                       wybranyLokal.id,
@@ -309,14 +271,7 @@ class _VenueScreenState extends ConsumerState<VenueScreen> {
                       children: [
                         Container(
                           decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              colors: [
-                                Color(0xFFffb114),
-                                Color(0xFFDB200C),
-                              ],
-                              begin: Alignment.centerLeft,
-                              end: Alignment.centerRight,
-                            ),
+                            gradient: kGradientBR,
                             borderRadius:
                                 BorderRadius.circular(15), // Zaokrąglenie rogów
                           ),
@@ -332,14 +287,7 @@ class _VenueScreenState extends ConsumerState<VenueScreen> {
                         ),
                         Container(
                           decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              colors: [
-                                Color(0xFFffb114),
-                                Color(0xFFDB200C),
-                              ],
-                              begin: Alignment.centerLeft,
-                              end: Alignment.centerRight,
-                            ),
+                            gradient: kGradientBR,
                             borderRadius:
                                 BorderRadius.circular(15), // Zaokrąglenie rogów
                           ),
@@ -347,7 +295,7 @@ class _VenueScreenState extends ConsumerState<VenueScreen> {
                             onPressed: () {
                               setState(() {
                                 is_schowed = true;
-                                if (is_used) {}
+                                is_used = true;
                               });
 
                               print(is_schowed);

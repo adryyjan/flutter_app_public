@@ -13,7 +13,22 @@ class WelcomeScreen extends StatefulWidget {
   State<WelcomeScreen> createState() => _WelcomeScreenState();
 }
 
-class _WelcomeScreenState extends State<WelcomeScreen> {
+class _WelcomeScreenState extends State<WelcomeScreen>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _animation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: Duration(seconds: 2), // Czas trwania animacji
+    )..repeat(reverse: true); // Powtarza animację tam i z powrotem
+
+    _animation = Tween<double>(begin: 100, end: 150).animate(_controller);
+  }
+
   Future<void> permision() async {
     bool serviceEnabled;
     LocationPermission permission;
@@ -51,11 +66,15 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Image.asset(
-                    'images/beer.png',
-                    width: 150,
-                    height: 150,
-                  ),
+                  AnimatedBuilder(
+                      animation: _animation,
+                      builder: (context, child) {
+                        return Image.asset(
+                          'images/beer.png',
+                          width: 150,
+                          height: _animation.value,
+                        );
+                      }),
                   const SizedBox(
                     height: 20,
                   ),
