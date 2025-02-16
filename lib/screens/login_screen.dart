@@ -57,7 +57,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
       print("Pobrano ${allOffers.length} lokali.");
       return allOffers;
     } catch (e) {
-      print("Błąd podczas pobierania wszystkich lokali: $e");
+      print("Błąd podczas pobierania wszystkich ofert: $e");
       return [];
     }
   }
@@ -231,6 +231,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                     .addLokale(favFb);
                                 for (int i = 0; i < lokale.length; i++) {
                                   print(lokale[i].nazwaLokalu);
+                                }
+                                for (int i = 0; i < oferty.length; i++) {
+                                  print(oferty[i].nazwa);
                                 }
                                 Navigator.popAndPushNamed(
                                     context, MainScreen.id);

@@ -58,24 +58,37 @@ class _MegaPromocjeState extends ConsumerState<MegaPromocje> {
                         ),
                       ],
                     ),
-                    Stack(
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          widget.oferta.opisOferta,
-                          style: kOffertDiscountBg,
+                        Column(
+                          children: [
+                            Stack(
+                              children: [
+                                Text(
+                                  widget.oferta.opisOferta,
+                                  style: kOffertDiscountBg,
+                                ),
+                                Text(
+                                  widget.oferta.opisOferta,
+                                  style: kOffertDiscount,
+                                ),
+                              ],
+                            ),
+                            Stack(
+                              children: [
+                                Text(widget.oferta.cena, style: kOffertHeadBg),
+                                Text(widget.oferta.cena, style: kOffertHead),
+                              ],
+                            ),
+                          ],
                         ),
-                        Text(
-                          widget.oferta.opisOferta,
-                          style: kOffertDiscount,
+                        Image.asset(
+                          "images/wine.png",
+                          height: 80,
                         ),
                       ],
-                    ),
-                    Stack(
-                      children: [
-                        Text(widget.oferta.cena, style: kOffertHeadBg),
-                        Text(widget.oferta.cena, style: kOffertHead),
-                      ],
-                    ),
+                    )
                   ],
                 ),
               ),

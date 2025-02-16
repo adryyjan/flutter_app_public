@@ -242,7 +242,7 @@ class _VenueScreenState extends ConsumerState<VenueScreen> {
                                                   venueAttributeId:
                                                       wybranyLokal.id,
                                                   additionalScore:
-                                                      ocena!.toInt());
+                                                      (ocena! / 2).toInt());
                                             }
                                             ocena = null;
                                             is_used = !is_used;

@@ -17,7 +17,7 @@ class Lokal {
   final double muzyka;
   final double personel;
   final String opis;
-  late int usersRating;
+  late double usersRating;
   late int liczbaOcen;
 
   Lokal({
@@ -92,7 +92,7 @@ class Lokal {
     );
   }
 
-  void updateUserRating(int newRating) {
+  void updateUserRating(double newRating) {
     usersRating = newRating;
     liczbaOcen++;
   }

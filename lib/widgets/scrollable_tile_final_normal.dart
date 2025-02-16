@@ -64,7 +64,7 @@ class _ScrollableTileFinalNormalState
         scrollDirection: Axis.vertical,
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             childAspectRatio: 4,
-            crossAxisCount: 1, // Jeden rząd
+            crossAxisCount: 1,
             mainAxisSpacing: 10.0,
             crossAxisSpacing: 10),
         itemCount: _lista?.length ?? 0,
@@ -119,7 +119,6 @@ class _ScrollableTileFinalNormalState
                   child: ScrollableTiles(
                     nazwa_loklau: _lista![index].nazwaLokalu.toString(),
                     ocena: _lista![index].ocena,
-                    dystans: '0.9',
                     lokal: _lista![index],
                     xCord: _lista![index].xCord,
                     yCord: _lista![index].yCord,

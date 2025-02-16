@@ -26,8 +26,6 @@ class ScrollableTileFinalSwipable extends ConsumerStatefulWidget {
 class _ScrollableTileFinalSwipableState
     extends ConsumerState<ScrollableTileFinalSwipable> {
   late List<Lokal>? _lista;
-  // late List<Lokal>? _listaUlubionych;
-
   Map<int, double> _offsets = {};
 
   @override
@@ -119,7 +117,6 @@ class _ScrollableTileFinalSwipableState
                   child: ScrollableTiles(
                     nazwa_loklau: _lista![index].nazwaLokalu.toString(),
                     ocena: _lista![index].ocena,
-                    dystans: '0.9',
                     lokal: _lista![index],
                     xCord: _lista![index].xCord,
                     yCord: _lista![index].yCord,

@@ -44,13 +44,29 @@ class RouteService {
     }
   }
 
-  double calculateTotalDistance(List<LatLng> points) {
+  Future<String> calculateRoute(LatLng start, LatLng end) async {
+    if (start.latitude == 0.0 && start.longitude == 0.0) {
+      return "BŁĄD: Niepoprawne współrzędne!";
+    }
+
+    try {
+      final routePoints = await getRouteCoordinates(start, end);
+
+      final distance = _calculatePolylineLength(routePoints);
+      return (distance / 1000).toStringAsFixed(1);
+    } catch (e) {
+      print("Błąd trasy: $e");
+    }
+
+    return "BŁĄD: Nie udało się pobrać odległości.";
+  }
+
+  double _calculatePolylineLength(List<LatLng> points) {
     double totalDistance = 0;
 
     for (int i = 0; i < points.length - 1; i++) {
       totalDistance += calculateDistance(points[i], points[i + 1]);
     }
-
     return totalDistance;
   }
 
