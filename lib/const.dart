@@ -32,7 +32,7 @@ var kOffertHeadBg = GoogleFonts.montserrat(
 );
 
 var kOffertDiscount = GoogleFonts.montserrat(
-    fontSize: 35, fontWeight: FontWeight.w900, color: Colors.white);
+    fontSize: 35, fontWeight: FontWeight.w900, color: Colors.yellow);
 
 var kOffertDiscountBg = GoogleFonts.montserrat(
   fontSize: 36,

@@ -20,7 +20,6 @@ class VenueScreen extends ConsumerStatefulWidget {
 }
 
 class _VenueScreenState extends ConsumerState<VenueScreen> {
-  bool is_schowed = false;
   bool is_used = false;
   double? ocena;
 
@@ -130,13 +129,13 @@ class _VenueScreenState extends ConsumerState<VenueScreen> {
                           iconSize: 70,
                           onPressed: () {
                             setState(() {
-                              if (ulubioneLokale.any!(
+                              if (ulubioneLokale.any(
                                   (lokal) => lokal.id == wybranyLokal?.id)) {
                                 setState(() {
                                   ref
                                       .read(ulubioneProvider.notifier)
                                       .removeFromFavorites(wybranyLokal!);
-                                  removeVenueFromUser(wybranyLokal!.id);
+                                  removeVenueFromUser(wybranyLokal.id);
                                 });
                               } else {
                                 ulubioneLokale.add(wybranyLokal!);
@@ -145,7 +144,7 @@ class _VenueScreenState extends ConsumerState<VenueScreen> {
                             });
                           },
                           icon: ulubioneLokale
-                                  .any!((lokal) => lokal.id == wybranyLokal?.id)
+                                  .any((lokal) => lokal.id == wybranyLokal?.id)
                               ? Icon(
                                   Icons.favorite,
                                   color: Color(0xFFDB200C),
@@ -208,7 +207,7 @@ class _VenueScreenState extends ConsumerState<VenueScreen> {
                           height: 5,
                         ),
                         Center(
-                          child: is_schowed
+                          child: is_used
                               ? Column(
                                   children: [
                                     CategorySlider(
@@ -238,17 +237,15 @@ class _VenueScreenState extends ConsumerState<VenueScreen> {
                                       child: TextButton(
                                         onPressed: () {
                                           setState(() {
-                                            is_schowed = false;
                                             if (is_used) {
-                                              print('ocena: ${ocena!.toInt()}');
-                                              print("WYWYLANE");
-                                              print((ocena! / 2).toInt());
                                               addScoreByVenueAttributeId(
                                                   venueAttributeId:
                                                       wybranyLokal.id,
                                                   additionalScore:
                                                       ocena!.toInt());
                                             }
+                                            ocena = null;
+                                            is_used = !is_used;
                                           });
                                         },
                                         child: Text(
@@ -294,15 +291,11 @@ class _VenueScreenState extends ConsumerState<VenueScreen> {
                           child: TextButton(
                             onPressed: () {
                               setState(() {
-                                is_schowed = true;
-                                is_used = true;
+                                is_used = !is_used;
                               });
-
-                              print(is_schowed);
-                              // Navigator.popAndPushNamed(context, MapScreen.id);
                             },
                             child: Text(
-                              'OCEŃ',
+                              is_used ? 'ANULUJ' : 'OCEŃ',
                               style: kDesctyprionTextStyleWhite,
                             ),
                           ),

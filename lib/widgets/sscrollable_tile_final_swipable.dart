@@ -1,28 +1,30 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:funnavi/const.dart';
 
 import '../class/local_data.dart';
+import '../providers/ulunioneProvider.dart';
 import '../widgets/scrollable_tiles.dart';
 
-class ScrollableTileFinalSwipable extends StatefulWidget {
+class ScrollableTileFinalSwipable extends ConsumerStatefulWidget {
   final List<Lokal>? lista;
   final List<Lokal>? listaUlubionych;
 
-  const ScrollableTileFinalSwipable({
+  ScrollableTileFinalSwipable({
     super.key,
     required this.lista,
     required this.listaUlubionych,
   });
 
   @override
-  _ScrollableTileFinalSwipableState createState() =>
+  ConsumerState<ScrollableTileFinalSwipable> createState() =>
       _ScrollableTileFinalSwipableState();
 }
 
 class _ScrollableTileFinalSwipableState
-    extends State<ScrollableTileFinalSwipable> {
+    extends ConsumerState<ScrollableTileFinalSwipable> {
   late List<Lokal>? _lista;
   // late List<Lokal>? _listaUlubionych;
 
@@ -53,6 +55,7 @@ class _ScrollableTileFinalSwipableState
 
   @override
   Widget build(BuildContext context) {
+    final ulubioneLokale = ref.watch(ulubioneProvider);
     return Container(
       color: kTlo,
       child: GridView.builder(
@@ -98,7 +101,7 @@ class _ScrollableTileFinalSwipableState
                 },
                 onHorizontalDragEnd: (details) {
                   if (details.primaryVelocity! < 15) {
-                    // _addToFavorites(_lista![index]);
+                    ulubioneLokale.add(_lista![index]);
                     addVenueToUser(_lista![index].id);
                     setState(() {
                       _offsets[index] = 0;

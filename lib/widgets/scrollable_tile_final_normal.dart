@@ -10,7 +10,10 @@ import '../providers/ulunioneProvider.dart';
 
 class ScrollableTileFinalNormal extends ConsumerStatefulWidget {
   List<Lokal>? lista;
-  ScrollableTileFinalNormal({super.key, required this.lista});
+  ScrollableTileFinalNormal({
+    super.key,
+    required this.lista,
+  });
 
   @override
   ConsumerState<ScrollableTileFinalNormal> createState() =>
