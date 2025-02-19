@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:funnavi/screens/main_screen.dart';
 import 'package:funnavi/screens/register_screen.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 import '../class/local_data.dart';
 import '../class/ofert_data.dart';
@@ -24,6 +25,7 @@ class LoginScreen extends ConsumerStatefulWidget {
 class _LoginScreenState extends ConsumerState<LoginScreen> {
   UserCredential? credentials;
   List<Lokal> favFb = [];
+  bool isWaiting = false;
   @override
   Future<List<Lokal>> pobierzLokale() async {
     FirebaseFirestore db = FirebaseFirestore.instance;
@@ -105,159 +107,168 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
 
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: kGradientBR,
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(
-              height: 30,
-            ),
-            Row(
-              children: [
-                const Expanded(
-                  child: Text(''),
-                ),
-                TextButton(
-                  onPressed: () {
-                    Navigator.popAndPushNamed(context, RegisterScreen.id);
-                  },
-                  child: Text(
-                    'Zarejestruj się',
-                    style: kDesctyprionTextStyleBlack,
-                  ),
-                )
-              ],
-            ),
-            Expanded(
-              flex: 2,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                crossAxisAlignment: CrossAxisAlignment.center,
+      body: ModalProgressHUD(
+        inAsyncCall: isWaiting,
+        child: Container(
+          decoration: BoxDecoration(
+            gradient: kGradientBR,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                height: 30,
+              ),
+              Row(
                 children: [
-                  Text(
-                    'CZAS NA RELAX!',
-                    style: kSmallerTitleTextStyleWhite,
+                  const Expanded(
+                    child: Text(''),
                   ),
-                  Text(
-                    'Powiedz czego oczekujesz od dzisiejszego wyjscia a My powiemy ci gdzie tego szukać :)',
-                    style: kDesctyprionTextStyleWhite,
-                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.popAndPushNamed(context, RegisterScreen.id);
+                    },
+                    child: Text(
+                      'Zarejestruj się',
+                      style: kDesctyprionTextStyleBlack,
+                    ),
+                  )
                 ],
               ),
-            ),
-            Expanded(
-                flex: 3,
-                child: Container(
-                  decoration: kZakladka,
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        height: 30,
-                      ),
-                      Card(
-                        margin: EdgeInsets.only(left: 20, right: 20),
-                        child: TextField(
-                          keyboardType: TextInputType.emailAddress,
-                          textAlign: TextAlign.center,
-                          decoration: InputDecoration(hintText: '   Login'),
-                          onChanged: (login) {
-                            ///todo:dodac dynamiczny login
-                          },
+              Expanded(
+                flex: 2,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      'CZAS NA RELAX!',
+                      style: kSmallerTitleTextStyleWhite,
+                    ),
+                    Text(
+                      'Powiedz czego oczekujesz od dzisiejszego wyjscia a My powiemy ci gdzie tego szukać :)',
+                      style: kDesctyprionTextStyleWhite,
+                    ),
+                  ],
+                ),
+              ),
+              Expanded(
+                  flex: 3,
+                  child: Container(
+                    decoration: kZakladka,
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          height: 30,
                         ),
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Card(
-                        margin: EdgeInsets.only(left: 20, right: 20),
-                        child: TextField(
-                          obscureText: true,
-                          textAlign: TextAlign.center,
-                          decoration: InputDecoration(
-                            hintText: '    Hasło',
+                        Card(
+                          margin: EdgeInsets.only(left: 20, right: 20),
+                          child: TextField(
+                            keyboardType: TextInputType.emailAddress,
+                            textAlign: TextAlign.center,
+                            decoration: InputDecoration(hintText: '   Login'),
+                            onChanged: (login) {
+                              ///todo:dodac dynamiczny login
+                            },
                           ),
-                          onChanged: (value) {
-                            ///todo:dodac dynamiczne haslo
-                          },
                         ),
-                      ),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: Text(''),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Card(
+                          margin: EdgeInsets.only(left: 20, right: 20),
+                          child: TextField(
+                            obscureText: true,
+                            textAlign: TextAlign.center,
+                            decoration: InputDecoration(
+                              hintText: '    Hasło',
+                            ),
+                            onChanged: (value) {
+                              ///todo:dodac dynamiczne haslo
+                            },
                           ),
-                          Text('Zapomniałeś hasła?'),
-                          SizedBox(
-                            width: 20,
-                          )
-                        ],
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Card(
-                        color: Colors.black,
-                        child: TextButton(
-                          onPressed: () async {
-                            try {
-                              final credentials = await FirebaseAuth.instance
-                                  .signInWithEmailAndPassword(
-                                      email: 'karolmmmm@gmail.com',
-                                      password: 'karolmmmm');
-                              if (credentials.user != null) {
-                                ref
-                                    .read(authProvider.notifier)
-                                    .setEmail('karolmmmm@gmail.com');
-                                ref
-                                    .read(authProvider.notifier)
-                                    .setHaslo('karolmmmm');
+                        ),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Text(''),
+                            ),
+                            Text('Zapomniałeś hasła?'),
+                            SizedBox(
+                              width: 20,
+                            )
+                          ],
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Card(
+                          color: Colors.black,
+                          child: TextButton(
+                            onPressed: () async {
+                              setState(() {
+                                isWaiting = true;
+                              });
+                              try {
+                                final credentials = await FirebaseAuth.instance
+                                    .signInWithEmailAndPassword(
+                                        email: 'karolmmmm@gmail.com',
+                                        password: 'karolmmmm');
+                                if (credentials.user != null) {
+                                  ref
+                                      .read(authProvider.notifier)
+                                      .setEmail('karolmmmm@gmail.com');
+                                  ref
+                                      .read(authProvider.notifier)
+                                      .setHaslo('karolmmmm');
 
-                                final lokale = await pobierzLokale();
-                                ref
-                                    .read(lokalProvider.notifier)
-                                    .setLokale(lokale);
+                                  final lokale = await pobierzLokale();
+                                  ref
+                                      .read(lokalProvider.notifier)
+                                      .setLokale(lokale);
 
-                                final oferty = await pobierzOferty();
-                                ref
-                                    .read(ofertyProvider.notifier)
-                                    .setOferty(oferty);
+                                  final oferty = await pobierzOferty();
+                                  ref
+                                      .read(ofertyProvider.notifier)
+                                      .setOferty(oferty);
 
-                                favFb = await pobierzUlubione();
-                                ref
-                                    .read(ulubioneProvider.notifier)
-                                    .addLokale(favFb);
-                                for (int i = 0; i < lokale.length; i++) {
-                                  print(lokale[i].nazwaLokalu);
+                                  favFb = await pobierzUlubione();
+                                  ref
+                                      .read(ulubioneProvider.notifier)
+                                      .addLokale(favFb);
+                                  for (int i = 0; i < lokale.length; i++) {
+                                    print(lokale[i].nazwaLokalu);
+                                  }
+                                  for (int i = 0; i < oferty.length; i++) {
+                                    print(oferty[i].nazwa);
+                                  }
+                                  Navigator.popAndPushNamed(
+                                      context, MainScreen.id);
                                 }
-                                for (int i = 0; i < oferty.length; i++) {
-                                  print(oferty[i].nazwa);
-                                }
-                                Navigator.popAndPushNamed(
-                                    context, MainScreen.id);
+                                setState(() {
+                                  isWaiting = false;
+                                });
+                              } catch (e) {
+                                print(e);
                               }
-                            } catch (e) {
-                              print(e);
-                            }
-                          },
-                          child: Text(
-                            'Zaloguj się',
-                            style: TextStyle(color: Colors.white),
+                            },
+                            child: Text(
+                              'Zaloguj się',
+                              style: TextStyle(color: Colors.white),
+                            ),
                           ),
                         ),
-                      ),
-                      SizedBox(
-                        height: 50,
-                      ),
-                      Text('Firebase- fb'),
-                      Text('Firebase- gmail'),
-                      Text('Firebase- telefon')
-                    ],
-                  ),
-                ))
-          ],
+                        SizedBox(
+                          height: 50,
+                        ),
+                        Text('Firebase- fb'),
+                        Text('Firebase- gmail'),
+                        Text('Firebase- telefon')
+                      ],
+                    ),
+                  ))
+            ],
+          ),
         ),
       ),
     );
