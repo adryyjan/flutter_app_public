@@ -5,9 +5,9 @@ import 'package:funnavi/widgets/category_list.dart';
 import 'package:funnavi/widgets/category_slider.dart';
 
 import '../API_PRIVATE.dart';
-import '../class/Location.dart';
-import '../class/LokalFilter.dart';
 import '../class/local_data.dart';
+import '../class/location.dart';
+import '../class/lokal_filter.dart';
 import '../const.dart';
 import '../providers/filterProvider.dart';
 import '../providers/filteredLocalsProvider.dart';

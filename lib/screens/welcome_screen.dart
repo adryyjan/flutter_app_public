@@ -58,6 +58,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
     return Scaffold(
       backgroundColor: kTlo,
       body: SafeArea(
+        bottom: false,
         child: Column(
           children: [
             Expanded(
@@ -70,7 +71,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                       animation: _animation,
                       builder: (context, child) {
                         return Image.asset(
-                          'images/beer.png',
+                          'images/PIWO.png',
                           width: 150,
                           height: _animation.value,
                         );

@@ -123,6 +123,7 @@ class _ScrollableTileFinalNormalState
                     xCord: _lista![index].xCord,
                     yCord: _lista![index].yCord,
                     opis: _lista![index].opis,
+                    rodzajLokalu: _lista![index].rodzajLokalu,
                   ),
                 ),
               )

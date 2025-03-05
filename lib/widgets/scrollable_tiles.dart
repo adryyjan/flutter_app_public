@@ -3,8 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../API_PRIVATE.dart';
-import '../class/Location.dart';
 import '../class/local_data.dart';
+import '../class/location.dart';
 import '../providers/currSelectedProvider.dart';
 import '../providers/userLocationProvider.dart';
 import '../screens/venue_screen.dart';
@@ -16,6 +16,7 @@ class ScrollableTiles extends ConsumerWidget {
   final double xCord;
   final double yCord;
   final String opis;
+  final String rodzajLokalu;
 
   ScrollableTiles({
     super.key,
@@ -25,6 +26,7 @@ class ScrollableTiles extends ConsumerWidget {
     required this.xCord,
     required this.yCord,
     required this.opis,
+    required this.rodzajLokalu,
   });
 
   final routeService = RouteService(GOOGLE_API);
@@ -120,10 +122,25 @@ class ScrollableTiles extends ConsumerWidget {
                     child: Container(
                       decoration: BoxDecoration(
                         color: Colors.white,
-                        borderRadius: BorderRadius.all(Radius.circular(20)),
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(20),
+                        ),
+                        gradient: LinearGradient(
+                          colors: [
+                            Color(0xFF1E3A8A),
+                            Color(0xFFDB200C),
+                          ],
+                          begin: Alignment.centerLeft,
+                          end: Alignment.centerRight,
+                        ),
                       ),
                       width: double.infinity,
-                      child: Center(child: Text("data")),
+                      child: Center(
+                        child: Image.asset(
+                          "images/${rodzajLokalu}.png",
+                          height: 90,
+                        ),
+                      ),
                     ),
                   ),
                 ],

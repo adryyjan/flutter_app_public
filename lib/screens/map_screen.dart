@@ -104,7 +104,7 @@ class _MapScreenState extends ConsumerState<MapScreen> {
     switch (nazwa_png) {
       case MarkerPng.beer:
         return AssetMapBitmap(
-          'images/beer.png',
+          'images/PIWO.png',
           height: 32,
           width: 32,
         );

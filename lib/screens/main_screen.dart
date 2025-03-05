@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:funnavi/widgets/Mega_promocje.dart';
+import 'package:funnavi/widgets/promotion_tile.dart';
 
 import '../class/local_data.dart';
 import '../const.dart';
@@ -220,7 +220,8 @@ class _MainScreenState extends ConsumerState<MainScreen> {
                           : Center(
                               child: Text(
                                 'Wariacie dodaj cos do ulubionych',
-                                style: kTitleTextStyleBlack,
+                                style: kSmallerTitleTextStyleBlack,
+                                textAlign: TextAlign.center,
                               ),
                             ),
             ),

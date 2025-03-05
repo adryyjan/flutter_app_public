@@ -99,7 +99,10 @@ class _ScrollableTileFinalSwipableState
                 },
                 onHorizontalDragEnd: (details) {
                   if (details.primaryVelocity! < 15) {
-                    ulubioneLokale.add(_lista![index]);
+                    ref
+                        .read(ulubioneProvider.notifier)
+                        .addToFavorites(_lista![index]);
+                    // ulubioneLokale.(_lista![index]);
                     addVenueToUser(_lista![index].id);
                     setState(() {
                       _offsets[index] = 0;
@@ -121,6 +124,7 @@ class _ScrollableTileFinalSwipableState
                     xCord: _lista![index].xCord,
                     yCord: _lista![index].yCord,
                     opis: _lista![index].opis,
+                    rodzajLokalu: _lista![index].rodzajLokalu,
                   ),
                 ),
               ),
@@ -131,3 +135,7 @@ class _ScrollableTileFinalSwipableState
     );
   }
 }
+
+///todo
+///merge 2 widgetow w 1 bo robia to samo tylko jeden usuwa drugi nie,
+///arg: isDeleting: 1/0 na bazei tego finkcjonalnosc i kolory za swipem

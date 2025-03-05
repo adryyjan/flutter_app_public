@@ -26,6 +26,35 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
   UserCredential? credentials;
   List<Lokal> favFb = [];
   bool isWaiting = false;
+
+  final FocusNode _focusNode1 = FocusNode();
+  final FocusNode _focusNode2 = FocusNode();
+  bool _isTextFieldFocused1 = false;
+  bool _isTextFieldFocused2 = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _focusNode1.addListener(() {
+      setState(() {
+        _isTextFieldFocused1 = _focusNode1.hasFocus;
+      });
+    });
+    _focusNode2.addListener(() {
+      setState(() {
+        _isTextFieldFocused2 = _focusNode2.hasFocus;
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    _focusNode1.dispose();
+    _focusNode2.dispose();
+
+    super.dispose();
+  }
+
   @override
   Future<List<Lokal>> pobierzLokale() async {
     FirebaseFirestore db = FirebaseFirestore.instance;
@@ -135,7 +164,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                   )
                 ],
               ),
-              Expanded(
+              Flexible(
                 flex: 2,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -164,6 +193,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         Card(
                           margin: EdgeInsets.only(left: 20, right: 20),
                           child: TextField(
+                            focusNode: _focusNode2,
                             keyboardType: TextInputType.emailAddress,
                             textAlign: TextAlign.center,
                             decoration: InputDecoration(hintText: '   Login'),
@@ -178,6 +208,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                         Card(
                           margin: EdgeInsets.only(left: 20, right: 20),
                           child: TextField(
+                            focusNode: _focusNode1,
                             obscureText: true,
                             textAlign: TextAlign.center,
                             decoration: InputDecoration(
@@ -236,12 +267,6 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                   ref
                                       .read(ulubioneProvider.notifier)
                                       .addLokale(favFb);
-                                  for (int i = 0; i < lokale.length; i++) {
-                                    print(lokale[i].nazwaLokalu);
-                                  }
-                                  for (int i = 0; i < oferty.length; i++) {
-                                    print(oferty[i].nazwa);
-                                  }
                                   Navigator.popAndPushNamed(
                                       context, MainScreen.id);
                                 }
@@ -258,12 +283,21 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                             ),
                           ),
                         ),
-                        SizedBox(
-                          height: 50,
+                        Flexible(
+                          child: SizedBox(
+                            height: 50,
+                          ),
                         ),
-                        Text('Firebase- fb'),
-                        Text('Firebase- gmail'),
-                        Text('Firebase- telefon')
+                        _isTextFieldFocused1 || _isTextFieldFocused2
+                            ? SizedBox.shrink()
+                            : Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text('Firebase- fb'),
+                                  Text('Firebase- gmail'),
+                                  Text('Firebase- telefon')
+                                ],
+                              )
                       ],
                     ),
                   ))
