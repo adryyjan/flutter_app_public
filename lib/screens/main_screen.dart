@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -6,8 +5,6 @@ import 'package:funnavi/widgets/promotion_tile.dart';
 
 import '../class/local_data.dart';
 import '../const.dart';
-import '../providers/authProvider.dart';
-import '../providers/filterProvider.dart';
 import '../providers/filteredLocalsProvider.dart';
 import '../providers/lokalsProvider.dart';
 import '../providers/offertsProvider.dart';
@@ -16,7 +13,11 @@ import '../widgets/bottom_menu.dart';
 import '../widgets/scrollable_tile_final_normal.dart';
 import '../widgets/sscrollable_tile_final_swipable.dart';
 
-enum wybor { popularne, filtrowane, ulubione }
+enum wybor {
+  popularne,
+  filtered,
+  ulubione,
+}
 
 class MainScreen extends ConsumerStatefulWidget {
   static const id = 'main';
@@ -30,61 +31,14 @@ class MainScreen extends ConsumerStatefulWidget {
 class _MainScreenState extends ConsumerState<MainScreen> {
   wybor selected_choice = wybor.popularne;
   UserCredential? credentials;
-  List<Lokal> favFb = [];
-  //
-  Future<List<Lokal>> pobierzUlubione() async {
-    FirebaseFirestore db = FirebaseFirestore.instance;
-    String userId = await getUser();
-
-    try {
-      DocumentSnapshot userDoc = await db.collection('users').doc(userId).get();
-
-      List<dynamic> venuesIdDynamic = userDoc.get('venue_ids');
-      List<String> venuesId = venuesIdDynamic.cast<String>();
-
-      List<Lokal> selectedVenues = [];
-
-      const int batchSize = 10;
-      for (int i = 0; i < venuesId.length; i += batchSize) {
-        int end =
-            (i + batchSize < venuesId.length) ? i + batchSize : venuesId.length;
-        List<String> batch = venuesId.sublist(i, end);
-
-        QuerySnapshot query =
-            await db.collection('venues').where('id', whereIn: batch).get();
-
-        for (var doc in query.docs) {
-          selectedVenues.add(Lokal.fromMap(doc.data() as Map<String, dynamic>));
-        }
-      }
-
-      return selectedVenues;
-    } catch (e) {
-      print("Error fetching venues: $e");
-      return [];
-    }
-  }
-
-  Future<String> getUser() async {
-    final authState = ref.read(authProvider);
-    credentials = await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: authState.email, password: authState.haslo);
-
-    return credentials!.user!.uid;
-  }
-
-  ///todo: oddzielna klasa na wczytywanie bo w 2 ekranach już jest
+  List<Lokal> fav = [];
 
   @override
   Widget build(BuildContext context) {
-    final filtrowane = ref.watch(filteredLocalsProvider);
-    final listaLokali = ref.watch(lokalProvider);
-    final listaOfert = ref.watch(ofertyProvider);
-    var favFb = ref.watch(ulubioneProvider);
-    final filter = ref.watch(filterProvider);
-
-    double screenWidth = MediaQuery.of(context).size.width;
-    double screenHeight = MediaQuery.of(context).size.height;
+    final filtered = ref.watch(filteredLocalsProvider);
+    final localsList = ref.watch(lokalProvider);
+    final offertsList = ref.watch(ofertyProvider);
+    final fav = ref.watch(ulubioneProvider);
 
     return Scaffold(
       body: Container(
@@ -105,9 +59,9 @@ class _MainScreenState extends ConsumerState<MainScreen> {
                   crossAxisCount: 1,
                   mainAxisSpacing: 16.0,
                 ),
-                itemCount: listaOfert?.length ?? 0,
+                itemCount: offertsList?.length ?? 0,
                 itemBuilder: (context, index) {
-                  return MegaPromocje(oferta: listaOfert![index]);
+                  return MegaPromocje(oferta: offertsList![index]);
                 },
               ),
             ),
@@ -148,18 +102,18 @@ class _MainScreenState extends ConsumerState<MainScreen> {
                     child: TextButton(
                       onPressed: () async {
                         setState(() {
-                          selected_choice = wybor.filtrowane;
+                          selected_choice = wybor.filtered;
                         });
                       },
                       style: TextButton.styleFrom(
-                        backgroundColor: selected_choice == wybor.filtrowane
+                        backgroundColor: selected_choice == wybor.filtered
                             ? Colors.white
                             : Colors.transparent,
                       ),
                       child: Icon(
                         Icons.manage_search_outlined,
                         size: 40,
-                        color: selected_choice == wybor.filtrowane
+                        color: selected_choice == wybor.filtered
                             ? Color(0xFFDB200C)
                             : Color(0xFF1E3A8A),
                       ),
@@ -168,7 +122,7 @@ class _MainScreenState extends ConsumerState<MainScreen> {
                   Expanded(
                     child: TextButton(
                       onPressed: () async {
-                        ref.read(ulubioneProvider.notifier).addLokale(favFb);
+                        ref.read(ulubioneProvider.notifier).addLokale(fav);
 
                         setState(() {
                           selected_choice = wybor.ulubione;
@@ -197,16 +151,16 @@ class _MainScreenState extends ConsumerState<MainScreen> {
             Expanded(
               child: selected_choice == wybor.popularne
                   ? ScrollableTileFinalSwipable(
-                      key: ValueKey(listaLokali),
-                      lista: listaLokali,
-                      listaUlubionych: favFb,
+                      key: ValueKey(localsList),
+                      lista: localsList,
+                      listaUlubionych: fav,
                     )
-                  : (selected_choice == wybor.filtrowane)
-                      ? filtrowane.isNotEmpty
+                  : (selected_choice == wybor.filtered)
+                      ? filtered.isNotEmpty
                           ? ScrollableTileFinalSwipable(
-                              key: ValueKey(filtrowane),
-                              lista: filtrowane,
-                              listaUlubionych: favFb,
+                              key: ValueKey(filtered),
+                              lista: filtered,
+                              listaUlubionych: fav,
                             )
                           : Center(
                               child: Text(
@@ -215,8 +169,8 @@ class _MainScreenState extends ConsumerState<MainScreen> {
                                 textAlign: TextAlign.center,
                               ),
                             )
-                      : favFb.isNotEmpty
-                          ? ScrollableTileFinalNormal(lista: favFb)
+                      : fav.isNotEmpty
+                          ? ScrollableTileFinalNormal(lista: fav)
                           : Center(
                               child: Text(
                                 'Wariacie dodaj cos do ulubionych',

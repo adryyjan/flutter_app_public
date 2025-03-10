@@ -3,13 +3,15 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:funnavi/screens/login_screen.dart';
+import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
-import '../class/local_data.dart';
-import '../class/ofert_data.dart';
 import '../const.dart';
 import '../providers/authProvider.dart';
 import '../providers/lokalsProvider.dart';
 import '../providers/offertsProvider.dart';
+import '../providers/ulunioneProvider.dart';
+import '../services/dataGetter.dart';
+import '../services/userGetter.dart';
 import 'main_screen.dart';
 
 class RegisterScreen extends ConsumerStatefulWidget {
@@ -21,203 +23,180 @@ class RegisterScreen extends ConsumerStatefulWidget {
 }
 
 class _RegisterScreenState extends ConsumerState<RegisterScreen> {
-  Future<List<Lokal>> pobierzLokale() async {
-    FirebaseFirestore db = FirebaseFirestore.instance;
-
-    try {
-      QuerySnapshot querySnapshot = await db.collection('venues').get();
-
-      List<Lokal> allVenues = querySnapshot.docs.map((doc) {
-        return Lokal.fromMap(doc.data() as Map<String, dynamic>);
-      }).toList();
-
-      allVenues.sort((a, b) => b.ocena.compareTo(a.ocena));
-
-      return allVenues;
-    } catch (e) {
-      print("Błąd podczas pobierania wszystkich lokali: $e");
-      return [];
-    }
-  }
-
-  Future<List<Oferta>> pobierzOferty() async {
-    FirebaseFirestore db = FirebaseFirestore.instance;
-
-    try {
-      QuerySnapshot querySnapshot = await db.collection('promotions').get();
-
-      List<Oferta> allOffers = querySnapshot.docs.map((doc) {
-        return Oferta.fromMap(doc.data() as Map<String, dynamic>);
-      }).toList();
-
-      print("Pobrano ${allOffers.length} lokali.");
-      return allOffers;
-    } catch (e) {
-      print("Błąd podczas pobierania wszystkich lokali: $e");
-      return [];
-    }
-  }
+  UserCredential? credentials;
+  bool isWaiting = false;
+  DataGetter dg = DataGetter();
 
   @override
   Widget build(BuildContext context) {
+    UserGetter ug = UserGetter(ref);
     return Scaffold(
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: kGradientBR,
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(
-              height: 30,
-            ),
-            Row(
-              children: [
-                const Expanded(
-                  child: Text(''),
-                ),
-                TextButton(
-                  onPressed: () {
-                    Navigator.popAndPushNamed(context, LoginScreen.id);
-                  },
-                  child: Text('Zaloguj się', style: kDesctyprionTextStyleBlack),
-                )
-              ],
-            ),
-            Expanded(
-              flex: 2,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                crossAxisAlignment: CrossAxisAlignment.center,
+      body: ModalProgressHUD(
+        inAsyncCall: isWaiting,
+        child: Container(
+          decoration: BoxDecoration(
+            gradient: kGradientBR,
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                height: 30,
+              ),
+              Row(
                 children: [
-                  Text(
-                    'DOŁĄCZ DO NAS!',
-                    style: kSmallerTitleTextStyleWhite,
+                  const Expanded(
+                    child: Text(''),
                   ),
-                  Text(
-                    'Załóż konto i nie zastanawiaj się już nigdy gdzie spedzisz wieczór- my zrobimy to za Ciebie :0',
-                    style: kDesctyprionTextStyleWhite,
-                  ),
+                  TextButton(
+                    onPressed: () {
+                      Navigator.popAndPushNamed(context, LoginScreen.id);
+                    },
+                    child:
+                        Text('Zaloguj się', style: kDesctyprionTextStyleBlack),
+                  )
                 ],
               ),
-            ),
-            Expanded(
-                flex: 3,
-                child: Container(
-                  decoration: kZakladka,
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        height: 30,
-                      ),
-                      Card(
-                        margin: EdgeInsets.only(left: 20, right: 20),
-                        child: TextField(
-                          textAlign: TextAlign.center,
-                          decoration: InputDecoration(hintText: '   Login'),
-                          onChanged: (value) {
-                            ///todo:dodac dynamiczny login
-                          },
+              Expanded(
+                flex: 2,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      'DOŁĄCZ DO NAS!',
+                      style: kSmallerTitleTextStyleWhite,
+                    ),
+                    Text(
+                      'Załóż konto i nie zastanawiaj się już nigdy gdzie spedzisz wieczór- my zrobimy to za Ciebie :0',
+                      style: kDesctyprionTextStyleWhite,
+                    ),
+                  ],
+                ),
+              ),
+              Expanded(
+                  flex: 3,
+                  child: Container(
+                    decoration: kZakladka,
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          height: 30,
                         ),
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Card(
-                        margin: EdgeInsets.only(left: 20, right: 20),
-                        child: TextField(
-                          textAlign: TextAlign.center,
-                          decoration: InputDecoration(
-                            hintText: '    Hasło',
+                        Card(
+                          margin: EdgeInsets.only(left: 20, right: 20),
+                          child: TextField(
+                            textAlign: TextAlign.center,
+                            decoration: InputDecoration(hintText: '   Login'),
+                            onChanged: (value) {
+                              ///todo:dodac dynamiczny login
+                            },
                           ),
-                          onChanged: (value) {
-                            ///todo:dodac dynamiczen haslo
-                          },
                         ),
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Card(
-                        margin: EdgeInsets.only(left: 20, right: 20),
-                        child: TextField(
-                          textAlign: TextAlign.center,
-                          decoration: InputDecoration(
-                            hintText: '   Powtórz hasło',
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Card(
+                          margin: EdgeInsets.only(left: 20, right: 20),
+                          child: TextField(
+                            textAlign: TextAlign.center,
+                            decoration: InputDecoration(
+                              hintText: '    Hasło',
+                            ),
+                            onChanged: (value) {
+                              ///todo:dodac dynamiczen haslo
+                            },
                           ),
-                          onChanged: (value) {
-                            ///todo:dodac dynamiczen haslo
-                          },
                         ),
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                      Card(
-                        color: Colors.black,
-                        child: TextButton(
-                          onPressed: () async {
-                            try {
-                              final credentials = await FirebaseAuth.instance
-                                  .createUserWithEmailAndPassword(
-                                      email: 'adrian2137@gmail.com',
-                                      password: 'adrian2137');
-                              if (credentials.user != null) {
-                                ref
-                                    .read(authProvider.notifier)
-                                    .setEmail('adrian2137@gmail.com');
-                                ref
-                                    .read(authProvider.notifier)
-                                    .setHaslo('adrian2137');
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Card(
+                          margin: EdgeInsets.only(left: 20, right: 20),
+                          child: TextField(
+                            textAlign: TextAlign.center,
+                            decoration: InputDecoration(
+                              hintText: '   Powtórz hasło',
+                            ),
+                            onChanged: (value) {
+                              ///todo:dodac dynamiczen haslo
+                            },
+                          ),
+                        ),
+                        SizedBox(
+                          height: 20,
+                        ),
+                        Card(
+                          color: Colors.black,
+                          child: TextButton(
+                            onPressed: () async {
+                              try {
+                                final credentials = await FirebaseAuth.instance
+                                    .createUserWithEmailAndPassword(
+                                        email: 'test1aaa@gmail.com',
+                                        password: 'test1aaa');
+                                if (credentials.user != null) {
+                                  ref
+                                      .read(authProvider.notifier)
+                                      .setEmail('adrian2137@gmail.com');
+                                  ref
+                                      .read(authProvider.notifier)
+                                      .setHaslo('adrian2137');
 
-                                final lokale = await pobierzLokale();
-                                ref
-                                    .read(lokalProvider.notifier)
-                                    .setLokale(lokale);
+                                  final lokale = await dg.fetchAllVenues();
+                                  ref
+                                      .read(lokalProvider.notifier)
+                                      .setLokale(lokale);
 
-                                final oferty = await pobierzOferty();
-                                ref
-                                    .read(ofertyProvider.notifier)
-                                    .setOferty(oferty);
-                                Navigator.popAndPushNamed(
-                                    context, MainScreen.id);
+                                  final oferty = await dg.fetchAllOffers();
+                                  ref
+                                      .read(ofertyProvider.notifier)
+                                      .setOferty(oferty);
+                                  Navigator.popAndPushNamed(
+                                      context, MainScreen.id);
+                                  final favFb = await dg
+                                      .fetchFavoriteVenues(await ug.getUser());
+                                  ref
+                                      .read(ulubioneProvider.notifier)
+                                      .addLokale(favFb);
+                                }
+
+                                User? user = credentials.user;
+                                if (user != null) {
+                                  await FirebaseFirestore.instance
+                                      .collection('users')
+                                      .doc(user.uid)
+                                      .set(
+                                    {
+                                      'user_id': user.uid,
+                                      // 'email': user.email,
+                                      'venue_ids': [],
+                                    },
+                                    SetOptions(merge: true),
+                                  );
+                                  print("User added to Firestore!");
+                                }
+                              } catch (e) {
+                                print(e);
                               }
-
-                              User? user = credentials.user;
-                              if (user != null) {
-                                await FirebaseFirestore.instance
-                                    .collection('users')
-                                    .doc(user.uid)
-                                    .set(
-                                  {
-                                    'user_id': user.uid,
-                                    // 'email': user.email,
-                                    'venue_ids': [],
-                                  },
-                                  SetOptions(merge: true),
-                                );
-                                print("User added to Firestore!");
-                              }
-                            } catch (e) {
-                              print(e);
-                            }
-                          },
-                          child: Text(
-                            'Zarejestruj się',
-                            style: TextStyle(color: Colors.white),
+                            },
+                            child: Text(
+                              'Zarejestruj się',
+                              style: TextStyle(color: Colors.white),
+                            ),
                           ),
                         ),
-                      ),
-                      // SizedBox(
-                      //   height: 50,
-                      // ),
-                      Text('Firebase- fb'),
-                      Text('Firebase- gmail'),
-                      Text('Firebase- telefon')
-                    ],
-                  ),
-                ))
-          ],
+                        // SizedBox(
+                        //   height: 50,
+                        // ),
+                        Text('Firebase- fb'),
+                        Text('Firebase- gmail'),
+                        Text('Firebase- telefon')
+                      ],
+                    ),
+                  ))
+            ],
+          ),
         ),
       ),
     );

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+double screenWidth(BuildContext context) => MediaQuery.of(context).size.width;
+double screenHeight(BuildContext context) => MediaQuery.of(context).size.height;
+
 var kTitleTextStyleBlack = GoogleFonts.poppins(
     fontSize: 70, fontWeight: FontWeight.w900, color: Colors.black);
 

@@ -85,21 +85,6 @@ class _MapScreenState extends ConsumerState<MapScreen> {
     });
   }
 
-  double _getMarkerColor(MarkerColor color) {
-    switch (color) {
-      case MarkerColor.zielony:
-        return BitmapDescriptor.hueGreen;
-      case MarkerColor.ciemnoZielony:
-        return BitmapDescriptor.hueCyan;
-      case MarkerColor.ulubiony:
-        return BitmapDescriptor.hueYellow;
-      case MarkerColor.rozowy:
-        return BitmapDescriptor.hueRose;
-      case MarkerColor.czerwony:
-        return BitmapDescriptor.hueRed;
-    }
-  }
-
   AssetMapBitmap _getMarkerPng(MarkerPng nazwa_png) {
     switch (nazwa_png) {
       case MarkerPng.beer:

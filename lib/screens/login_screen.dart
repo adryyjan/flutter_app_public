@@ -1,18 +1,18 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:funnavi/screens/main_screen.dart';
 import 'package:funnavi/screens/register_screen.dart';
+import 'package:funnavi/services/userGetter.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 
 import '../class/local_data.dart';
-import '../class/ofert_data.dart';
 import '../const.dart';
 import '../providers/authProvider.dart';
 import '../providers/lokalsProvider.dart';
 import '../providers/offertsProvider.dart';
 import '../providers/ulunioneProvider.dart';
+import '../services/dataGetter.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   static const id = 'login';
@@ -55,86 +55,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     super.dispose();
   }
 
+  DataGetter dg = DataGetter();
+
   @override
-  Future<List<Lokal>> pobierzLokale() async {
-    FirebaseFirestore db = FirebaseFirestore.instance;
-
-    try {
-      QuerySnapshot querySnapshot = await db.collection('venues').get();
-
-      List<Lokal> allVenues = querySnapshot.docs.map((doc) {
-        return Lokal.fromMap(doc.data() as Map<String, dynamic>);
-      }).toList();
-
-      allVenues.sort((a, b) => b.ocena.compareTo(a.ocena));
-
-      return allVenues;
-    } catch (e) {
-      print("Błąd podczas pobierania wszystkich lokali: $e");
-      return [];
-    }
-  }
-
-  Future<List<Oferta>> pobierzOferty() async {
-    FirebaseFirestore db = FirebaseFirestore.instance;
-
-    try {
-      QuerySnapshot querySnapshot = await db.collection('promotions').get();
-
-      List<Oferta> allOffers = querySnapshot.docs.map((doc) {
-        return Oferta.fromMap(doc.data() as Map<String, dynamic>);
-      }).toList();
-
-      print("Pobrano ${allOffers.length} lokali.");
-      return allOffers;
-    } catch (e) {
-      print("Błąd podczas pobierania wszystkich ofert: $e");
-      return [];
-    }
-  }
-
-  Future<String> getUser() async {
-    final authState = ref.read(authProvider);
-    credentials = await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: authState.email, password: authState.haslo);
-
-    return credentials!.user!.uid;
-  }
-
-  Future<List<Lokal>> pobierzUlubione() async {
-    FirebaseFirestore db = FirebaseFirestore.instance;
-    String userId = await getUser();
-
-    try {
-      DocumentSnapshot userDoc = await db.collection('users').doc(userId).get();
-
-      List<dynamic> venuesIdDynamic = userDoc.get('venue_ids');
-      List<String> venuesId = venuesIdDynamic.cast<String>();
-
-      List<Lokal> selectedVenues = [];
-
-      const int batchSize = 10;
-      for (int i = 0; i < venuesId.length; i += batchSize) {
-        int end =
-            (i + batchSize < venuesId.length) ? i + batchSize : venuesId.length;
-        List<String> batch = venuesId.sublist(i, end);
-
-        QuerySnapshot query =
-            await db.collection('venues').where('id', whereIn: batch).get();
-
-        for (var doc in query.docs) {
-          selectedVenues.add(Lokal.fromMap(doc.data() as Map<String, dynamic>));
-        }
-      }
-
-      return selectedVenues;
-    } catch (e) {
-      print("Error fetching venues: $e");
-      return [];
-    }
-  }
-
   Widget build(BuildContext context) {
+    UserGetter ug = UserGetter(ref);
     return Scaffold(
       body: ModalProgressHUD(
         inAsyncCall: isWaiting,
@@ -237,6 +162,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           color: Colors.black,
                           child: TextButton(
                             onPressed: () async {
+                              print(screenHeight);
+                              print(screenWidth);
                               setState(() {
                                 isWaiting = true;
                               });
@@ -253,17 +180,18 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                                       .read(authProvider.notifier)
                                       .setHaslo('karolmmmm');
 
-                                  final lokale = await pobierzLokale();
+                                  final lokale = await dg.fetchAllVenues();
                                   ref
                                       .read(lokalProvider.notifier)
                                       .setLokale(lokale);
 
-                                  final oferty = await pobierzOferty();
+                                  final oferty = await dg.fetchAllOffers();
                                   ref
                                       .read(ofertyProvider.notifier)
                                       .setOferty(oferty);
 
-                                  favFb = await pobierzUlubione();
+                                  favFb = await dg
+                                      .fetchFavoriteVenues(await ug.getUser());
                                   ref
                                       .read(ulubioneProvider.notifier)
                                       .addLokale(favFb);

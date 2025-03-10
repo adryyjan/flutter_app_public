@@ -80,7 +80,7 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                     height: 20,
                   ),
                   Text(
-                    'FUNNAVI',
+                    'FUNAVI',
                     style: kTitleTextStyleBlack,
                   ),
                   const SizedBox(
